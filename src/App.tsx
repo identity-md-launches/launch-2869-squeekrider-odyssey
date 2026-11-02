@@ -248,6 +248,11 @@ export default function App() {
       c.height = Math.round(r.height * dpr);
       game.current.width = (r.width / r.height) * 440;
       game.current.height = 440;
+      // Resizing clears the bitmap; paint even if animation callbacks are deferred.
+      ctx.setTransform(
+        c.width / game.current.width, 0, 0, c.height / game.current.height, 0, 0,
+      );
+      render(ctx, game.current, reduced);
     };
     const observer = new ResizeObserver(resize);
     observer.observe(c);
@@ -298,7 +303,8 @@ export default function App() {
         else if (game.current.phase === "paused") resume();
         return;
       }
-      if (target.closest("button")) return;
+      if (target.closest("button") && e.code !== "ArrowUp" && e.code !== "KeyW")
+        return;
       if (e.code === "Space" || e.code === "ArrowUp" || e.code === "KeyW") {
         e.preventDefault();
         if (game.current.phase === "riding") doJump();
@@ -341,7 +347,7 @@ export default function App() {
 
   const openDialog = (kind: "help" | "clear") => {
     dialogOpener.current = document.activeElement as HTMLElement;
-    if (kind === "help") pause();
+    pause();
     setDialog(kind);
   };
   const openHelp = () => openDialog("help");
@@ -419,14 +425,14 @@ export default function App() {
           <div className="intro">
             <div>
               <h1 id="page-title">
-                Small rider. <span>Big adventure.</span>
+                One mouse. <span>Two wheels.</span>
               </h1>
-              <p>A little mouse, a trusty bike, and the long way home.</p>
+              <p>A free browser game across three endless desert trails.</p>
             </div>
             <div className="personal-best">
               <Icon name="trophy" size={22} />
               <span>
-                Personal best
+                Personal best{" "}
                 <strong>
                   {integer(best)} <span>m</span>
                 </strong>
@@ -478,7 +484,6 @@ export default function App() {
               </div>
               {phase === "ready" && (
                 <div className="start-overlay">
-                  <span className="intro-note">A small escape awaits.</span>
                   <button
                     ref={startRef}
                     type="button"
@@ -548,12 +553,6 @@ export default function App() {
                   </div>
                 </div>
               )}
-              <span
-                className={`scene-signature ${trail === "moon" ? "signature-night" : ""}`}
-                aria-hidden="true"
-              >
-                Take the scenic route.
-              </span>
             </div>
             <div className="game-controls">
               <p id="game-directions">
@@ -578,7 +577,7 @@ export default function App() {
           <div className="game-footnote">
             <span>
               <span className="status-dot" />
-              Free to play. Made for a moment away.
+              Free to play.
             </span>
             <span>
               {storageAvailable

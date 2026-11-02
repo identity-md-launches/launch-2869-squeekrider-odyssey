@@ -362,22 +362,8 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
   min-width: 270px;
   text-align: center;
-}
-.intro-note {
-  font-family: var(--font-display);
-  font-size: var(--text-title);
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.025em;
-}
-.trail-moon .intro-note {
-  color: #f6eedc;
-  background: #313f50;
-  padding: 2px 8px;
-  border-radius: 3px;
 }
 .start-button {
   min-width: 184px;
@@ -422,18 +408,6 @@ section {
 .text-button:disabled {
   color: var(--text-secondary);
   opacity: 0.6;
-}
-.scene-signature {
-  position: absolute;
-  bottom: 19px;
-  right: 25px;
-  font-family: var(--font-display);
-  font-size: var(--text-small);
-  color: #50573f;
-  pointer-events: none;
-}
-.signature-night {
-  color: #3e414c;
 }
 .game-controls {
   display: flex;
@@ -975,10 +949,21 @@ dialog .dialog-note {
     font-size: var(--text-small);
   }
   .intro {
-    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
   }
   .personal-best {
-    display: none;
+    border-inline-start: 0;
+    padding-inline-start: 0;
+    gap: 8px;
+  }
+  .personal-best strong {
+    display: inline;
+    margin-inline-start: 6px;
+    font-size: var(--text-small);
+  }
+  .personal-best strong span {
+    font-size: inherit;
   }
   .intro h1 {
     max-width: 600px;
@@ -1121,16 +1106,7 @@ dialog .dialog-note {
   }
   .start-overlay {
     top: 20%;
-    gap: 15px;
     min-width: 260px;
-  }
-  .intro-note {
-    font-size: var(--text-lead);
-  }
-  .scene-signature {
-    right: 16px;
-    bottom: 14px;
-    font-size: var(--text-small);
   }
   .game-controls {
     padding: 11px 13px;

@@ -31,7 +31,7 @@ Open the preview address printed by Vite. Serve the site over HTTP or HTTPS; ope
 - Choose Sunbaked valley, Cactus pass, or Moonlit mesa, then select **Start riding**.
 - Tap the trail, press Space, Arrow Up, or W, or use **Jump**. Jump a second time in the air for a double jump.
 - Avoid rocks and cacti. Each cheese pickup adds one snack, independently of distance. The ride gradually speeds up.
-- Use the pause control, P, or Escape for a breather. P or Escape resumes a paused ride; **Resume ride** is also available. Leaving the window or hiding the tab pauses play.
+- Use the pause control, P, or Escape for a breather. Opening help or the clear-log confirmation also pauses the ride; resume explicitly afterwards. P or Escape resumes a paused ride; **Resume ride** is also available. Leaving the window or hiding the tab pauses play.
 - A collision ends the ride. Retry immediately or choose another trail. **Finish this ride** is available while paused.
 
 Sound is optional, starts through an explicit interaction, and uses short synthesized effects. It does not fetch audio.
@@ -44,14 +44,15 @@ Filter by trail, sort by latest or longest, or export all saved rides as CSV. Ex
 
 ## Checks actually run
 
-The final source and lockfile were copied into a fresh temporary directory. `npm ci`, `npm run typecheck`, `npm test`, and `npm run build` all exited successfully. Its final `dist/` is the delivered production export. Frontend dependencies and package caches were kept outside the submission tree; no ignore file was added or changed.
+For this revision, the source and unchanged lockfile were installed in a fresh temporary build directory. `npm ci`, `npm run typecheck`, `npm test`, and `npm run build` all exited successfully. Its final `dist/` is the delivered production export. Frontend dependencies and package caches were kept outside the submission tree; no ignore file was added or changed.
 
 | Check | Actual result |
 | --- | --- |
 | Clean install and production build | Passed; 33 modules transformed |
 | TypeScript | Passed, no errors |
 | `npm test` | 11 tests passed, including 200 seeded game simulations |
-| Production browser interactions | 15 grouped checks passed in Chromium |
+| Production browser interactions | 15 grouped checks passed in Chromium; WebKit start/jump/pause/resume/help also passed |
+| Review regressions | 12 checks passed across Chromium and WebKit 2370; all five reported findings reproduced and fixed |
 | Pinned taste@1 probe | All 16 checks passed at 320, 390, and 1440 wide |
 | axe-core 4.10.3 | No reported violations in five inspected states |
 | Offline runtime and subpath | Loaded at `/preview/` with external requests blocked; no script errors or missing assets |
@@ -60,18 +61,21 @@ The final source and lockfile were copied into a fresh temporary directory. `npm
 The optional browser suite is included at `scripts/validate-browser.mjs`. It serves the production export itself in a bounded foreground process and closes its server and browsers afterwards. With Playwright available locally:
 
 ```sh
-IMD_PLAYWRIGHT=/absolute/path/to/playwright/index.mjs \
-PLAYWRIGHT_BROWSERS_PATH=/absolute/path/to/browsers \
+export IMD_PLAYWRIGHT=/absolute/path/to/playwright/index.mjs
+export PLAYWRIGHT_BROWSERS_PATH=/absolute/path/to/browsers
 node scripts/validate-browser.mjs
+
+# With the same Playwright settings, run the focused review regressions:
+node scripts/validate-revision.mjs
 ```
 
 Optionally set `AXE_SCRIPT` to a local `axe.min.js` to include accessibility scans. Neither Playwright nor axe is needed to build or run the site. The suite writes temporary evidence under `test/scratch/`; that folder is not part of the deliverable.
 
-The supplied design probe was also run with its external Playwright module and `--out test/scratch/taste --offline`. The review, fixed findings, measured color pairs, and coverage limits are recorded in [VALIDATION.md](VALIDATION.md). The implemented design system is documented in [DESIGN.md](DESIGN.md).
+The supplied design probe was rerun with its external Playwright module and `--out test/scratch/taste --offline`. The focused suite checks pixels before input and while animation callbacks are withheld, measures real rider movement after Jump receives focus, verifies modal pause/cancel/confirm, and checks the persisted best at 320, 390, 600, 820, 821, and 1440px. Per-finding answers are in `.imd-responses.json`. The review, fixed findings, measured color pairs, and coverage limits are recorded in [VALIDATION.md](VALIDATION.md). The implemented design system is documented in [DESIGN.md](DESIGN.md).
 
 ## Limitations
 
-WebKit could not launch because its browser executable is absent in the supplied runtime. Safari and physical devices were not verified. The browser connector itself returned `Transport closed`; inspection used local headless Chromium screenshots and interaction automation instead. Native 200% zoom, RTL presentation, and screen-reader sessions were not performed.
+Chromium and Playwright WebKit 2370 were checked in this revision. The browser connector could not start because its Chrome executable was missing; inspection used local headless browser automation and actual screenshots instead. Physical Safari/iOS devices were not verified. Native 200% zoom, RTL presentation, and screen-reader sessions were not performed.
 
 The surrounding interface supports keyboard operation and semantic controls, but the real-time obstacle game is visual and does not provide a complete nonvisual equivalent. Reduced motion removes decorative dust, scarf and wheel animation, smooth scrolling, and UI transitions; essential trail movement continues during play and has a visible pause control. Automated scans do not establish full accessibility compliance. Records are local and can be edited or erased through browser storage.
 

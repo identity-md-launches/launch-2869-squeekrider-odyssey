@@ -2,6 +2,62 @@
 
 Date: 2026-11-02. This is the worker's own evidence, not independent certification.
 
+## Revision review and verification
+
+All five findings were reproduced against a preserved copy of the accepted `dist/` before changing application source. The changes are confined to the canvas initialization, modal pause, button-focused jump shortcuts, responsive personal best, and reported first-screen copy. The simulation, trails, assets, dependencies, metadata and storage format remain as accepted.
+
+| Finding / severity | Reproduction | Fix in final source and recheck |
+| --- | --- | --- |
+| `ff1e73e5…` / high | Fresh WebKit 2370 at 390 × 844, mobile/touch, no input for 1.5 seconds: 356 × 330 canvas had zero opaque pixels, one color, first pixel `[0,0,0,0]`, PNG data URL length 778. | `src/App.tsx:251` sets the logical transform and renders immediately at the end of `resize()`. Final fresh WebKit: 117,480 opaque pixels, first pixel `[229,238,230,255]`, 956 colors, PNG length 19,982. Chromium and WebKit also paint with animation callbacks deliberately withheld; a real canvas resize from 356 to 346px repaints immediately. |
+| `21ed46d3…` / medium | Chromium clear-log modal during play left `phase-riding`; distance advanced 5 → 20 m in 900ms while controls were blocked. | `src/App.tsx:348` pauses before opening either dialog. Final modal tests: Chromium stays paused at 5 m and WebKit at 6 m over 900ms. Cancel preserves the seeded record and restores trigger focus. Confirm clears records/best; both exits leave the game paused and Resume works. |
+| `608c0841…` / medium | Canvas-focused shortcuts moved the rider; after clicking Jump and landing, ArrowUp and W with Jump focused left all rider-origin samples at y=346.6. | `src/App.tsx:306` lets ArrowUp/KeyW through the button guard, keeping native Space/Enter activation. Final instrumented canvas draws reach approximately y=251 after either shortcut in both engines. Observation intercepts drawing coordinates without changing game state. |
+| `d194a3b7…` / medium | With recent ride 21 m and separately stored best 1,000 m, the only best output was hidden at 320/390/600/820px. | `src/styles.css:951` keeps it visible, wraps the intro with a 12px gap and makes the value/unit compact and inline. Both engines show 1,000 m at 320/390/600/820/821/1440px without overflow. At 390px, best, illustrated product, directions, and Start riding remain on the first screen. |
+| `444fd551…` / medium taste | Initial 390px screenshot contained the headline plus intro-note, scene-signature and “Made for a moment away.”; supporting copy never called this a game. | `src/App.tsx:428` uses “One mouse. Two wheels.” with the existing brown second phrase and “A free browser game across three endless desert trails.” Removes both extra scene lines and shortens the footnote to “Free to play.” Unused styles and overlay gaps are removed, so Start riding rises within its existing overlay. Jump directions and local-record explanation remain. |
+
+The exact finding IDs, verdicts and evidence are in root `.imd-responses.json`. The durable before/after measurements are in `docs/review/revision-results.json`. Baseline mode asserts the reported defects; its passing result means successful reproduction, not correct behavior.
+
+### Better Interface coverage for this revision
+
+Read the pinned workflow, six domains’ core principles, applicable focus/layout/writing guidance, design-critic thresholds and documentation method. Applied the existing tokens and components throughout.
+
+| Domain | Coverage and outcome |
+| --- | --- |
+| Accessibility | Checked: button-focused keyboard jumps, pause semantics, native dialog containment/return, unchanged visible focus styles, reduced motion, labelled controls. Broader suite and axe checked ready/help/moon/paused/finished states. Screen-reader and physical-device tests not performed. |
+| Layout | Checked: personal best and first-screen product/action at six widths in both engines; broader suite also checked 1024px, maximum counters and 20 records. Probe found no horizontal scroll, overlapping text or clipped text at 320/390/1440. Native 200% zoom and RTL not verified. |
+| Writing | Checked: one four-word headline and plain game explanation; extra promotional lines removed; action, jump, record and destructive-confirmation copy preserved. |
+| Typography | Checked: existing two local fonts, three weights, 5 phone/6 desktop sizes; compact best retains value and unit. No extra type size or font added. No multilingual test. |
+| Colors | Checked: no new palette values. Probe/axe measured resolved DOM text; new compact best uses the existing secondary ink/page and strong ink/page pairs. Those solid pairs calculate to 5.11:1 (label/unit) and 10.63:1 (value). Text over canvas and animated artwork pixels remain outside a complete contrast audit. |
+| UI | Checked: synchronous ready and resized scene with deferred callbacks; active/modal/paused/resumed flows; start, retry, sound, trails and log states. Desktop and phone screenshots inspected. Slowed animation-panel and physical-touch review not performed. |
+
+### Commands and actual results on the final export
+
+Dependencies were installed outside the repository from the unchanged package manifest and lockfile using `npm ci --no-audit --no-fund` with an external cache. No ignore file was added or changed. The temporary build copy ran `npm run typecheck`, `npm test`, and `npm run build`: all exited 0. Eleven engine tests passed, including 200 seeded simulations; Vite transformed 33 modules. The resulting `dist/` replaced the repository export.
+
+The following commands ran from the repository with an externally installed Playwright module and browsers configured through the suites’ documented environment variables (and a local axe script for the broader suite):
+
+```sh
+node scripts/validate-revision.mjs --baseline
+node scripts/validate-revision.mjs
+node scripts/validate-browser.mjs
+node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste --offline
+```
+
+- Baseline: **12/12 defect-reproduction checks passed** across Chromium and WebKit 2370.
+- Final regressions: **12/12 passed** across both engines, including fresh no-input pixels, resize with callbacks withheld, real jump movement, modal cancel/confirm/resume, six-width best visibility, and copy.
+- Broader interactions: **15 Chromium groups plus 1 WebKit group passed**. No tracked script/resource errors or external runtime requests. Subpath `/preview/` works. This suite includes start, jump, pause/resume, finish/retry/collision, trail selection, sound, storage failure/corruption, maximum records, filters/sorting, CSV, clear/cancel and help focus.
+- axe-core 4.10.3: **zero reported violations in five states**. Incomplete/manual items remain recorded; this is not full accessibility certification.
+- Pinned taste@1: **16/16 passed**. First-screen prose: 17 words at 390px (limit 60); one two-beat headline; 5 phone/6 desktop font sizes. Three secondary targets below the comfortable 44px still meet its 24px/spacing rule. Ten text boxes over canvas/images are excluded from the probe’s contrast measurement.
+
+Final screenshots inspected include Chromium 390/1440, WebKit 390 with the preserved 1,000 m best, ready/riding/paused/finished/help/moon states, focused controls, and responsive 320/600/820/1024 layouts. Current representative screenshots and compact reports replace the previous files in `docs/review/`; raw runs remain in `test/scratch/` only and are removed before submission. A screenshot operation can wake WebKit drawing: the fresh-load pixel evidence is collected before taking the screenshot. The deterministic withheld-callback check separately proves initial paint and resize do not need animation frames.
+
+The browser connector could not start because its Chrome executable was missing; headless Chromium and WebKit automation provided the actual interaction and screenshot evidence. WebKit used temporary browser libraries outside the repository; no test dependencies or machine configuration ship with the static site. Physical Safari/iOS, native zoom, RTL, screen-reader sessions and slowed animation-panel checks remain unperformed. Real-time gameplay remains visual. No unresolved reported finding remains.
+
+**Revision completion: Complete for the stated scope, with the device/accessibility limits above.** No publication or Git metadata changes were performed.
+
+## Initial implementation record
+
+The sections below retain the previous round’s evidence. The revision record above supersedes its browser availability, first-screen copy, screenshot, and final-source line references.
+
 ## Scope and assumptions
 
 The supplied brief named **squeekrider-odyssey** and required a useful, responsive static website; no additional product specification or input assets were supplied. Implemented a single-page browser game about a mouse riding a bicycle, with three trails, real collision/pickup simulation, local records, filtering/sorting, CSV export, and help. No remote service or requester-only value is needed.
@@ -37,7 +93,7 @@ There is one visual idea: a small, line-drawn mouse traveling through a muted de
 
 ## Findings fixed and rechecked
 
-Line numbers below refer to the final source; they identify the corrected area.
+These prior-round line numbers refer to that round’s source. Current changed-source references are in the revision table above.
 
 | Severity / area | Finding and evidence | Correction and recheck |
 | --- | --- | --- |

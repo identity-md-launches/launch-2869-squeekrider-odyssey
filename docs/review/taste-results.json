@@ -4,7 +4,7 @@
       "name": "render",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 8028,
+      "durationMs": 8447,
       "output": "renders, no script errors or missing local files"
     },
     {
@@ -26,7 +26,7 @@
       "passed": true,
       "exitCode": 0,
       "durationMs": 0,
-      "output": "all measured text meets 4.5:1 (3:1 large)\n14 text boxes over images, video, canvas or gradients not measured"
+      "output": "all measured text meets 4.5:1 (3:1 large)\n10 text boxes over images, video, canvas or gradients not measured"
     },
     {
       "name": "casing",
@@ -46,7 +46,7 @@
       "name": "eyebrows",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 0,
+      "durationMs": 1,
       "output": "no kicker labels above headings"
     },
     {
@@ -54,13 +54,13 @@
       "passed": true,
       "exitCode": 0,
       "durationMs": 0,
-      "output": "390: 5 sizes in use, 5 with one-offs (14px\u00d734, 16px\u00d76, 18px\u00d75, 24px\u00d73, 32px\u00d72)\n1440: 6 sizes in use, 6 with one-offs (14px\u00d741, 16px\u00d76, 18px\u00d75, 24px\u00d73, 32px\u00d73, 48px\u00d72)\nbar: 6 sizes used more than once, 8 counting one-offs, per width"
+      "output": "390: 5 sizes in use, 5 with one-offs (14px\u00d736, 16px\u00d76, 18px\u00d74, 24px\u00d73, 32px\u00d72)\n1440: 6 sizes in use, 6 with one-offs (14px\u00d740, 16px\u00d76, 18px\u00d75, 24px\u00d72, 32px\u00d73, 48px\u00d72)\nbar: 6 sizes used more than once, 8 counting one-offs, per width"
     },
     {
       "name": "type-faces",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 1,
+      "durationMs": 0,
       "output": "families (2): bricolage grotesque, dm sans\nweights (3): 400, 600, 700"
     },
     {
@@ -75,13 +75,13 @@
       "passed": true,
       "exitCode": 0,
       "durationMs": 0,
-      "output": "1 two-beat lines; a stack is four or more, so keep the best and cut the rest:\n\"Small rider. Big adventure.\" (#page-title)"
+      "output": "1 two-beat lines; a stack is four or more, so keep the best and cut the rest:\n\"One mouse. Two wheels.\" (#page-title)"
     },
     {
       "name": "repetition",
       "passed": true,
       "exitCode": 0,
-      "durationMs": 1,
+      "durationMs": 2,
       "output": "no repeated lines"
     },
     {
@@ -89,7 +89,7 @@
       "passed": true,
       "exitCode": 0,
       "durationMs": 0,
-      "output": "prose on the first screen: 27 words at 390 (bar 60), 19 at 1440 (bar 90)\nall words on the first screen: 71 at 390, 72 at 1440\nwhole page: 260 words, 141 of them prose"
+      "output": "prose on the first screen: 17 words at 390 (bar 60), 9 at 1440 (bar 90)\nall words on the first screen: 60 at 390, 57 at 1440\nwhole page: 245 words, 131 of them prose"
     },
     {
       "name": "chrome",

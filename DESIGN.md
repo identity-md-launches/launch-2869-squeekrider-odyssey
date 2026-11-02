@@ -4,7 +4,7 @@
 
 A casual game for a short browser break. An original line-drawn mouse, a muted desert, and warm paper surfaces carry the visual identity. The name was supplied; the setting and mouse character were inferred for this implementation.
 
-The product comes first: a compact utility header, a short four-word headline, then the playable trail. Section titles introduce trail selection, a field guide, and the local ride log. On the checked 390 × 844 screen, the game, Start riding, and jump directions are all visible without scrolling.
+The product comes first: a compact utility header, the four-word headline “One mouse. Two wheels.” and a plain game description, then the playable trail. Section titles introduce trail selection, a field guide, and the local ride log. On the checked 390 × 844 screen, the game, Start riding, and jump directions are all visible without scrolling.
 
 The source of truth is `src/styles.css`, with trail artwork colors in `TRAILS` in `src/game.ts`. No CSS framework, external image service, or component library is used.
 
@@ -26,9 +26,9 @@ CSS primitives feed semantic roles in `src/styles.css:15`.
 | `--selected` | `#e9eddf` | Selected trail surface |
 | `--status` | `#667551` | Availability dot beside the free-play note |
 
-Primary action labels use `#252a21`; the headline's second phrase uses `#8b5438`. Artwork colors remain scoped to the illustrations rather than becoming additional interface accents. The moon trail changes the scene, not the page theme. Its intro text uses `#f6eedc` on an opaque `#313f50` backing so the moving moon cannot reduce contrast.
+Primary action labels use `#252a21`; the headline's second phrase uses `#8b5438`. Artwork colors remain scoped to the illustrations rather than becoming additional interface accents. The moon trail changes the scene, not the page theme. The ready overlay contains only the primary action; the former intro note and ground signature have been removed.
 
-CSS solid-pair calculations: body ink on surface 11.49:1; secondary ink on page 5.11:1 and muted surface 4.64:1; primary action 5.11:1, hover 4.68:1; focus against page 7.64:1; moon intro 9.29:1. See validation for the scope of these measurements and the canvas limitation.
+CSS solid-pair calculations: body ink on surface 11.49:1; secondary ink on page 5.11:1 and muted surface 4.64:1; personal-best value on page 10.63:1; primary action 5.11:1, hover 4.68:1; focus against page 7.64:1. See validation for the scope of these measurements and the canvas limitation.
 
 ## Typography
 
@@ -39,7 +39,7 @@ Both variable WOFF2 files are self-hosted in `src/assets/`, declare weights 400�
 | `--text-small` | 14px | Captions, navigation, table, compact guidance |
 | `--text-body` | 16px | Body, main controls, guide item titles |
 | `--text-lead` | 18px | Trail headings, compact brand |
-| `--text-title` | 24px | Brand, intro note, dialog heading |
+| `--text-title` | 24px | Brand, dialog heading |
 | `--text-section` | 32px | Section and game-state headings |
 | `--text-display` | 48px | Main headline |
 
@@ -50,6 +50,8 @@ Heading line heights are 1.1, 1.2, and 1.4 for h1, h2, and h3; body copy uses 1.
 ## Layout
 
 `.page-width` caps content at 1184px. Default side margins are 48px, falling to 32px below 1120px and 16px below 600px. Spacing mostly uses 4px steps: 8–12px within controls, 16–24px between related elements, and 38–64px between major sections.
+
+The personal best stays visible at every width. At 820px and below, `.intro` wraps with a 12px gap; `.personal-best` loses its left rule and padding, and its value and unit become inline at `--text-small`. At 390px this forms a compact line below the explanation. Desktop retains the larger stacked value beside the introduction.
 
 The header is 104px high, 88px below 820px, and 82px below 600px. Desktop navigation disappears below 600px; the logo and utility controls remain. Hash links and contextual links provide navigation through the single page. There is no fixed toolbar over page content.
 
@@ -73,10 +75,10 @@ Game shell: 14px radius, 13px inside artwork and control-strip corners. Trail ca
 
 - **Brand and icons:** `MouseMark` and `Icon` in `src/icons.tsx`. The mouse is a filled original mark; utility icons share current-color strokes. Decorative SVGs are hidden from assistive technology. Icon buttons have accessible names.
 - **Primary/secondary/text actions:** `.primary-button`, `.secondary-button`, `.text-button`, and `.icon-button` in `src/styles.css`. Main actions have a 48px minimum height. Hover is gated by pointer capability; focus is a 3px outline; pressed controls scale to 0.96 only without reduced motion. Disabled controls remain identifiable and do not invoke actions.
-- **Game:** the `.game-shell` pattern in `src/App.tsx` contains ready, riding, paused, and finished states. The canvas receives keyboard focus after start/resume. Keyboard focus is drawn around the shell on the solid page background, so it stays visible on all trails. Results and pause controls receive focus when those states open.
+- **Game:** the `.game-shell` pattern in `src/App.tsx` contains ready, riding, paused, and finished states. The canvas paints synchronously after initial sizing and every resize, then uses the existing animation loop. It receives keyboard focus after start/resume. ArrowUp and W continue to jump when Jump or another game button holds focus; Space and Enter retain native button activation. Keyboard focus is drawn around the shell on the solid page background, so it stays visible on all trails. Results and pause controls receive focus when those states open.
 - **Trail selector:** `TrailArt` and the `.trail-card` pattern in `src/App.tsx`. Buttons expose `aria-pressed`, selected copy and a check mark. They are disabled during a live or paused ride; nearby copy explains how to change trails.
 - **Ride log:** labeled native selects, a semantic table, an actionable empty state, CSV export, and a confirmed clearing action in `src/App.tsx`. No fabricated rides are shipped. `parseSaved` in `src/game.ts` validates persisted values. Storage failure changes the visible persistence explanation.
-- **Dialogs:** a native modal `<dialog>` in `src/App.tsx`, with background inertness, explicit Tab/Shift+Tab wrapping, Escape/backdrop/close actions, and focus restoration. Help is available from header and footer. Destructive clearing has a clear consequence, export advice, and a cancel action.
+- **Dialogs:** a native modal `<dialog>` in `src/App.tsx`, with background inertness, explicit Tab/Shift+Tab wrapping, Escape/backdrop/close actions, and focus restoration. Both help and clearing pause an active ride before opening the modal; closing either leaves the ride paused until resumed. Help is available from header and footer. Destructive clearing has a clear consequence, export advice, and a cancel action.
 - **Artwork and sound:** `render`, `drawMouse`, `drawCactus`, and `drawCheese` in `src/art.ts`; `RideAudio` in `src/sound.ts`. Canvas art is local and original. Sound has no background soundtrack and is opt-in. Reduced motion suppresses decorative motion; gameplay movement is essential, user-started, and pausable.
 
 ## Do's and Don'ts

@@ -1,17 +1,16 @@
 {
   "budgetBytes": 8388608,
-  "totalBytesIncludingArtifactCopies": 1590669,
-  "fileCount": 50,
+  "totalDeliveredBytes": 1111124,
+  "fileCount": 47,
   "groups": {
-    "src": 159476,
-    "public": 68559,
-    "dist": 387972,
-    "scripts": 18214,
-    "tests": 5121,
+    "rootFiles": 79801,
+    "dist": 387511,
+    "docs": 367934,
     "third_party": 11964,
-    "docs": 428580,
-    "artifacts": 439420,
-    "rootFiles": 66491
+    "src": 159000,
+    "scripts": 31234,
+    "public": 68559,
+    "tests": 5121
   },
   "exportFiles": [
     {
@@ -25,14 +24,14 @@
       "sha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543"
     },
     {
-      "path": "dist/assets/index-BwnwXREh.css",
-      "bytes": 19588,
-      "sha256": "1116b42c46398e0171947469d56aeacfcfcabcc0b6afe62009e3ffa6ce13c38b"
+      "path": "dist/assets/index-DGSIfSyq.css",
+      "bytes": 19237,
+      "sha256": "e8903b45497e6663771b6a306a23be348a5bc51e9a1afcdd088c540c46567ec1"
     },
     {
-      "path": "dist/assets/index-Nm1uE74n.js",
-      "bytes": 220304,
-      "sha256": "9b3bd60245f85679df7f9adb7a4cef6cae8151e814532ca351fda28ae81ea4bf"
+      "path": "dist/assets/index-DVPTsBd2.js",
+      "bytes": 220194,
+      "sha256": "68e684991d8ad1aef3125ad7d2bafd22956d07b01358ea705573677e5e075e7c"
     },
     {
       "path": "dist/favicon.svg",
@@ -42,7 +41,7 @@
     {
       "path": "dist/index.html",
       "bytes": 1245,
-      "sha256": "2e615d543c2536779d328d2363eef00f0734effb7e485b66823acfeb9515bd69"
+      "sha256": "01d25de97e165b34d64681eea69a103acf0bb554687fb2305dd93a7bb8a35b9d"
     },
     {
       "path": "dist/licenses/Bricolage-Grotesque-OFL.txt",
@@ -73,10 +72,12 @@
   "checks": {
     "relativeExportURLs": "passed",
     "publicAssetsMatchExport": "passed",
+    "buildSourceAndExportMatch": "passed",
     "shareImage": "PNG 1200x630",
     "manifestMatchesLockfile": "passed",
     "noDependencyDirectoriesOrArchives": "passed",
     "noIgnoreFileChanged": true,
-    "sourceAndExportIncluded": true
+    "sourceAndExportIncluded": true,
+    "allFindingsAnswered": "5 fixed"
   }
 }

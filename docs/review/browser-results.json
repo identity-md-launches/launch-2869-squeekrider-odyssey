@@ -59,11 +59,13 @@
     {
       "name": "no browser errors, missing resources, or runtime external requests",
       "passed": true
+    },
+    {
+      "name": "WebKit mobile start, jump, pause, resume, help, and static subpath",
+      "passed": true
     }
   ],
-  "browserLimitations": [
-    "WebKit could not launch: executable missing in supplied runtime."
-  ],
+  "browserLimitations": [],
   "accessibility": [
     {
       "state": "ready with maximum records",
@@ -76,7 +78,7 @@
         },
         {
           "id": "color-contrast",
-          "nodes": 6
+          "nodes": 4
         }
       ]
     },
@@ -102,7 +104,7 @@
         },
         {
           "id": "color-contrast",
-          "nodes": 5
+          "nodes": 4
         }
       ]
     },
@@ -117,7 +119,7 @@
         },
         {
           "id": "color-contrast",
-          "nodes": 8
+          "nodes": 7
         }
       ]
     },
@@ -132,7 +134,7 @@
         },
         {
           "id": "color-contrast",
-          "nodes": 12
+          "nodes": 11
         }
       ]
     }

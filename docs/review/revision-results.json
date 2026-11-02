@@ -1,0 +1,722 @@
+{
+  "before": {
+    "mode": "baseline (assert reported defects)",
+    "results": [
+      {
+        "engine": "chromium",
+        "name": "fresh mobile canvas before interaction",
+        "passed": true,
+        "observations": {
+          "width": 356,
+          "height": 330,
+          "firstPixel": [
+            229,
+            238,
+            230,
+            255
+          ],
+          "opaque": 117480,
+          "colors": 2016,
+          "pngLength": 33962
+        }
+      },
+      {
+        "engine": "chromium",
+        "name": "clear modal freezes an active ride, cancel and confirm keep it paused",
+        "passed": true,
+        "observations": {
+          "before": {
+            "phase": "game-shell phase-riding trail-valley",
+            "distance": "5"
+          },
+          "after": {
+            "phase": "game-shell phase-riding trail-valley",
+            "distance": "20"
+          }
+        }
+      },
+      {
+        "engine": "chromium",
+        "name": "all-time best visible with its unit at every breakpoint",
+        "passed": true,
+        "observations": [
+          {
+            "width": 320,
+            "text": "Personal best1,000 m",
+            "display": "none",
+            "visible": false,
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "width": 390,
+            "text": "Personal best1,000 m",
+            "display": "none",
+            "visible": false,
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "width": 600,
+            "text": "Personal best1,000 m",
+            "display": "none",
+            "visible": false,
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "width": 820,
+            "text": "Personal best1,000 m",
+            "display": "none",
+            "visible": false,
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "width": 821,
+            "text": "Personal best\n1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 650,
+              "y": -1076,
+              "width": 139,
+              "height": 51.59375
+            }
+          },
+          {
+            "width": 1440,
+            "text": "Personal best\n1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 1163,
+              "y": 163.390625,
+              "width": 149,
+              "height": 51.59375
+            }
+          }
+        ]
+      },
+      {
+        "engine": "chromium",
+        "name": "one headline and plain game explanation on the first phone screen",
+        "passed": true,
+        "observations": {
+          "h1": "Small rider. Big adventure.",
+          "extraLines": [
+            "A small escape awaits.",
+            "Take the scenic route."
+          ],
+          "footnote": "Free to play. Made for a moment away.\nRecords stay in this browser."
+        }
+      },
+      {
+        "engine": "chromium",
+        "name": "ArrowUp and W jump after the Jump button receives focus",
+        "passed": true,
+        "observations": [
+          {
+            "key": "ArrowUp",
+            "canvasJump": 323.0927132,
+            "focused": "Jump",
+            "minY": 346.6
+          },
+          {
+            "key": "w",
+            "canvasJump": 330.5034044,
+            "focused": "Jump",
+            "minY": 346.6
+          }
+        ]
+      },
+      {
+        "engine": "chromium",
+        "name": "canvas paints and repaints when animation callbacks are withheld",
+        "passed": true,
+        "observations": {
+          "initial": {
+            "width": 356,
+            "height": 330,
+            "firstPixel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opaque": 0,
+            "colors": 1,
+            "pngLength": 4914
+          },
+          "resized": {
+            "width": 346,
+            "height": 330,
+            "firstPixel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opaque": 0,
+            "colors": 1,
+            "pngLength": 4850
+          }
+        }
+      },
+      {
+        "engine": "webkit",
+        "name": "fresh mobile canvas before interaction",
+        "passed": true,
+        "observations": {
+          "width": 356,
+          "height": 330,
+          "firstPixel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "opaque": 0,
+          "colors": 1,
+          "pngLength": 778
+        }
+      },
+      {
+        "engine": "webkit",
+        "name": "clear modal freezes an active ride, cancel and confirm keep it paused",
+        "passed": true,
+        "observations": {
+          "before": {
+            "phase": "game-shell phase-riding trail-valley",
+            "distance": "6"
+          },
+          "after": {
+            "phase": "game-shell phase-riding trail-valley",
+            "distance": "6"
+          }
+        }
+      },
+      {
+        "engine": "webkit",
+        "name": "all-time best visible with its unit at every breakpoint",
+        "passed": true,
+        "observations": [
+          {
+            "width": 320,
+            "text": "Personal best1,000 m",
+            "display": "none",
+            "visible": false,
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "width": 390,
+            "text": "Personal best1,000 m",
+            "display": "none",
+            "visible": false,
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "width": 600,
+            "text": "Personal best1,000 m",
+            "display": "none",
+            "visible": false,
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "width": 820,
+            "text": "Personal best1,000 m",
+            "display": "none",
+            "visible": false,
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "width": 821,
+            "text": "Personal best\n1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 650.390625,
+              "y": 159,
+              "width": 138.609375,
+              "height": 51.59375
+            }
+          },
+          {
+            "width": 1440,
+            "text": "Personal best\n1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 1163.390625,
+              "y": 163.390625,
+              "width": 148.609375,
+              "height": 51.59375
+            }
+          }
+        ]
+      },
+      {
+        "engine": "webkit",
+        "name": "one headline and plain game explanation on the first phone screen",
+        "passed": true,
+        "observations": {
+          "h1": "Small rider. Big adventure.",
+          "extraLines": [
+            "A small escape awaits.",
+            "Take the scenic route."
+          ],
+          "footnote": "Free to play. Made for a moment away.\nRecords stay in this browser."
+        }
+      },
+      {
+        "engine": "webkit",
+        "name": "ArrowUp and W jump after the Jump button receives focus",
+        "passed": true,
+        "observations": [
+          {
+            "key": "ArrowUp",
+            "canvasJump": 328.112,
+            "focused": "Jump",
+            "minY": 346.6
+          },
+          {
+            "key": "w",
+            "canvasJump": 322.68856,
+            "focused": "Jump",
+            "minY": 346.6
+          }
+        ]
+      },
+      {
+        "engine": "webkit",
+        "name": "canvas paints and repaints when animation callbacks are withheld",
+        "passed": true,
+        "observations": {
+          "initial": {
+            "width": 356,
+            "height": 330,
+            "firstPixel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opaque": 0,
+            "colors": 1,
+            "pngLength": 778
+          },
+          "resized": {
+            "width": 356,
+            "height": 330,
+            "firstPixel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "opaque": 0,
+            "colors": 1,
+            "pngLength": 778
+          }
+        }
+      }
+    ],
+    "limitations": [],
+    "errors": [],
+    "failures": [],
+    "external": []
+  },
+  "after": {
+    "mode": "fixed (assert correct behavior)",
+    "results": [
+      {
+        "engine": "chromium",
+        "name": "fresh mobile canvas before interaction",
+        "passed": true,
+        "observations": {
+          "width": 356,
+          "height": 330,
+          "firstPixel": [
+            229,
+            238,
+            230,
+            255
+          ],
+          "opaque": 117480,
+          "colors": 2016,
+          "pngLength": 33962
+        }
+      },
+      {
+        "engine": "chromium",
+        "name": "clear modal freezes an active ride, cancel and confirm keep it paused",
+        "passed": true,
+        "observations": {
+          "before": {
+            "phase": "game-shell phase-paused trail-valley",
+            "distance": "5"
+          },
+          "after": {
+            "phase": "game-shell phase-paused trail-valley",
+            "distance": "5"
+          }
+        }
+      },
+      {
+        "engine": "chromium",
+        "name": "all-time best visible with its unit at every breakpoint",
+        "passed": true,
+        "observations": [
+          {
+            "width": 320,
+            "text": "Personal best 1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 16,
+              "y": 223.15625,
+              "width": 182,
+              "height": 22
+            }
+          },
+          {
+            "width": 390,
+            "text": "Personal best 1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 16,
+              "y": 187.96875,
+              "width": 182,
+              "height": 22
+            }
+          },
+          {
+            "width": 600,
+            "text": "Personal best 1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 402,
+              "y": 120.484375,
+              "width": 182,
+              "height": 22
+            }
+          },
+          {
+            "width": 820,
+            "text": "Personal best 1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 606,
+              "y": 136.796875,
+              "width": 182,
+              "height": 22
+            }
+          },
+          {
+            "width": 821,
+            "text": "Personal best\n1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 650,
+              "y": 130,
+              "width": 139,
+              "height": 51.59375
+            }
+          },
+          {
+            "width": 1440,
+            "text": "Personal best\n1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 1163,
+              "y": 163.390625,
+              "width": 149,
+              "height": 51.59375
+            }
+          }
+        ]
+      },
+      {
+        "engine": "chromium",
+        "name": "one headline and plain game explanation on the first phone screen",
+        "passed": true,
+        "observations": {
+          "h1": "One mouse. Two wheels.",
+          "extraLines": [],
+          "footnote": "Free to play.\nRecords stay in this browser."
+        }
+      },
+      {
+        "engine": "chromium",
+        "name": "ArrowUp and W jump after the Jump button receives focus",
+        "passed": true,
+        "observations": [
+          {
+            "key": "ArrowUp",
+            "canvasJump": 330.5034044,
+            "focused": "Jump",
+            "minY": 251.050044
+          },
+          {
+            "key": "w",
+            "canvasJump": 330.5034044,
+            "focused": "Jump",
+            "minY": 251.050044
+          }
+        ]
+      },
+      {
+        "engine": "chromium",
+        "name": "canvas paints and repaints when animation callbacks are withheld",
+        "passed": true,
+        "observations": {
+          "initial": {
+            "width": 356,
+            "height": 330,
+            "firstPixel": [
+              229,
+              238,
+              230,
+              255
+            ],
+            "opaque": 117480,
+            "colors": 2016,
+            "pngLength": 33962
+          },
+          "resized": {
+            "width": 346,
+            "height": 330,
+            "firstPixel": [
+              229,
+              238,
+              230,
+              255
+            ],
+            "opaque": 114180,
+            "colors": 2054,
+            "pngLength": 34054
+          }
+        }
+      },
+      {
+        "engine": "webkit",
+        "name": "fresh mobile canvas before interaction",
+        "passed": true,
+        "observations": {
+          "width": 356,
+          "height": 330,
+          "firstPixel": [
+            229,
+            238,
+            230,
+            255
+          ],
+          "opaque": 117480,
+          "colors": 956,
+          "pngLength": 19982
+        }
+      },
+      {
+        "engine": "webkit",
+        "name": "clear modal freezes an active ride, cancel and confirm keep it paused",
+        "passed": true,
+        "observations": {
+          "before": {
+            "phase": "game-shell phase-paused trail-valley",
+            "distance": "6"
+          },
+          "after": {
+            "phase": "game-shell phase-paused trail-valley",
+            "distance": "6"
+          }
+        }
+      },
+      {
+        "engine": "webkit",
+        "name": "all-time best visible with its unit at every breakpoint",
+        "passed": true,
+        "observations": [
+          {
+            "width": 320,
+            "text": "Personal best 1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 16,
+              "y": 243.15625,
+              "width": 180.171875,
+              "height": 22
+            }
+          },
+          {
+            "width": 390,
+            "text": "Personal best 1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 16,
+              "y": 207.96875,
+              "width": 180.171875,
+              "height": 22
+            }
+          },
+          {
+            "width": 600,
+            "text": "Personal best 1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 403.828125,
+              "y": 140.484375,
+              "width": 180.171875,
+              "height": 22
+            }
+          },
+          {
+            "width": 820,
+            "text": "Personal best 1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 607.828125,
+              "y": 157.796875,
+              "width": 180.171875,
+              "height": 22
+            }
+          },
+          {
+            "width": 821,
+            "text": "Personal best\n1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 650.390625,
+              "y": 159,
+              "width": 138.609375,
+              "height": 51.59375
+            }
+          },
+          {
+            "width": 1440,
+            "text": "Personal best\n1,000 m",
+            "display": "flex",
+            "visible": true,
+            "box": {
+              "x": 1163.390625,
+              "y": 163.390625,
+              "width": 148.609375,
+              "height": 51.59375
+            }
+          }
+        ]
+      },
+      {
+        "engine": "webkit",
+        "name": "one headline and plain game explanation on the first phone screen",
+        "passed": true,
+        "observations": {
+          "h1": "One mouse. Two wheels.",
+          "extraLines": [],
+          "footnote": "Free to play.\nRecords stay in this browser."
+        }
+      },
+      {
+        "engine": "webkit",
+        "name": "ArrowUp and W jump after the Jump button receives focus",
+        "passed": true,
+        "observations": [
+          {
+            "key": "ArrowUp",
+            "canvasJump": 328.112,
+            "focused": "Jump",
+            "minY": 250.76056000000005
+          },
+          {
+            "key": "w",
+            "canvasJump": 323.56412,
+            "focused": "Jump",
+            "minY": 250.76188000000002
+          }
+        ]
+      },
+      {
+        "engine": "webkit",
+        "name": "canvas paints and repaints when animation callbacks are withheld",
+        "passed": true,
+        "observations": {
+          "initial": {
+            "width": 356,
+            "height": 330,
+            "firstPixel": [
+              229,
+              238,
+              230,
+              255
+            ],
+            "opaque": 117480,
+            "colors": 956,
+            "pngLength": 19982
+          },
+          "resized": {
+            "width": 346,
+            "height": 330,
+            "firstPixel": [
+              229,
+              238,
+              230,
+              255
+            ],
+            "opaque": 114180,
+            "colors": 964,
+            "pngLength": 19914
+          }
+        }
+      }
+    ],
+    "limitations": [],
+    "errors": [],
+    "failures": [],
+    "external": []
+  }
+}
