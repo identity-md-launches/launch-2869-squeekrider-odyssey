@@ -1,0 +1,140 @@
+{
+  "browserChecks": [
+    {
+      "name": "production export loads at /preview/ with local fonts and share card",
+      "passed": true
+    },
+    {
+      "name": "product and start action visible on first 390 screen",
+      "passed": true
+    },
+    {
+      "name": "start, keyboard double jump, pause, frozen score, and resume",
+      "passed": true
+    },
+    {
+      "name": "tap trail and visible Jump button both work during play",
+      "passed": true
+    },
+    {
+      "name": "retry and a real obstacle collision save another ride",
+      "passed": true
+    },
+    {
+      "name": "help dialog traps focus, closes with Escape, and restores focus",
+      "passed": true
+    },
+    {
+      "name": "all trails select, recolor, and run; moon palette remains readable",
+      "passed": true
+    },
+    {
+      "name": "ride log filters, sorting, CSV download, reload persistence",
+      "passed": true
+    },
+    {
+      "name": "clear log requires confirmation, cancel preserves rides, confirm resets best",
+      "passed": true
+    },
+    {
+      "name": "sound toggles and saved choice persists",
+      "passed": true
+    },
+    {
+      "name": "responsive layouts, anchors, keyboard focus, and reduced motion",
+      "passed": true
+    },
+    {
+      "name": "corrupt and maximum-length saved records render without overflow",
+      "passed": true
+    },
+    {
+      "name": "unavailable storage gives honest notice and still permits play",
+      "passed": true
+    },
+    {
+      "name": "automated accessibility scan: ready, help, moon, paused, and finished states",
+      "passed": true
+    },
+    {
+      "name": "no browser errors, missing resources, or runtime external requests",
+      "passed": true
+    }
+  ],
+  "browserLimitations": [
+    "WebKit could not launch: executable missing in supplied runtime."
+  ],
+  "accessibility": [
+    {
+      "state": "ready with maximum records",
+      "violations": 0,
+      "passes": 45,
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 6
+        }
+      ]
+    },
+    {
+      "state": "help dialog",
+      "violations": 0,
+      "passes": 20,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 3
+        }
+      ]
+    },
+    {
+      "state": "moon ready",
+      "violations": 0,
+      "passes": 44,
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 5
+        }
+      ]
+    },
+    {
+      "state": "paused after simulated window blur",
+      "violations": 0,
+      "passes": 45,
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 8
+        }
+      ]
+    },
+    {
+      "state": "finished",
+      "violations": 0,
+      "passes": 45,
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 12
+        }
+      ]
+    }
+  ]
+}

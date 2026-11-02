@@ -1,0 +1,82 @@
+{
+  "budgetBytes": 8388608,
+  "totalBytesIncludingArtifactCopies": 1590669,
+  "fileCount": 50,
+  "groups": {
+    "src": 159476,
+    "public": 68559,
+    "dist": 387972,
+    "scripts": 18214,
+    "tests": 5121,
+    "third_party": 11964,
+    "docs": 428580,
+    "artifacts": 439420,
+    "rootFiles": 66491
+  },
+  "exportFiles": [
+    {
+      "path": "dist/assets/bricolage-latin-DLoelf7F.woff2",
+      "bytes": 41344,
+      "sha256": "a97804dc9fbe5fc972a08018c5eda4dab7ef2346f64c57e61419d05e6de4ea1c"
+    },
+    {
+      "path": "dist/assets/dm-sans-latin-Xz1IZZA0.woff2",
+      "bytes": 36932,
+      "sha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543"
+    },
+    {
+      "path": "dist/assets/index-BwnwXREh.css",
+      "bytes": 19588,
+      "sha256": "1116b42c46398e0171947469d56aeacfcfcabcc0b6afe62009e3ffa6ce13c38b"
+    },
+    {
+      "path": "dist/assets/index-Nm1uE74n.js",
+      "bytes": 220304,
+      "sha256": "9b3bd60245f85679df7f9adb7a4cef6cae8151e814532ca351fda28ae81ea4bf"
+    },
+    {
+      "path": "dist/favicon.svg",
+      "bytes": 460,
+      "sha256": "5d3709381facff314cce0068408ba1b08d1bb80c49293ee67ef034814a0a6888"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 1245,
+      "sha256": "2e615d543c2536779d328d2363eef00f0734effb7e485b66823acfeb9515bd69"
+    },
+    {
+      "path": "dist/licenses/Bricolage-Grotesque-OFL.txt",
+      "bytes": 4401,
+      "sha256": "923f4ddf0fd39f9b7794ab0df7332f3d95dc43e8ad7ec2289d6d9e8491177f51"
+    },
+    {
+      "path": "dist/licenses/DM-Sans-OFL.txt",
+      "bytes": 4502,
+      "sha256": "6fbd040a29c2037a765dfb9f2561e9965b5c95c6dcb5dce516089d63d5f17af7"
+    },
+    {
+      "path": "dist/licenses/React-DOM-LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "path": "dist/licenses/React-LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "path": "dist/share.png",
+      "bytes": 57020,
+      "sha256": "a099b1f04e0629a85c80339fc865b335139d3d5d440a114d0cd95836871a236d"
+    }
+  ],
+  "checks": {
+    "relativeExportURLs": "passed",
+    "publicAssetsMatchExport": "passed",
+    "shareImage": "PNG 1200x630",
+    "manifestMatchesLockfile": "passed",
+    "noDependencyDirectoriesOrArchives": "passed",
+    "noIgnoreFileChanged": true,
+    "sourceAndExportIncluded": true
+  }
+}
