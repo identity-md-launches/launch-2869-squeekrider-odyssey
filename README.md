@@ -1,19 +1,17 @@
-# Squeekrider Odyssey
+# SqueekRider Odyssey
 
-A small, illustrated browser game about Pip, a mouse on a bicycle taking the long way home. Jump rocks and cacti, collect cheese, and try three endless desert trails.
+A colorful wheel-bike action runner and boss shooter. Fly Pip through three desert trails, collect Cheese Coins, upgrade the royal bike, and fight Baron Von Claw’s Clockwork Cat-Blimp. The HUD reads Squeektoshi’s wheel directly from Squeekchain.
 
-The assignment supplied the product name without a detailed game specification. The mouse rider, desert setting, rules, and visual direction are implementation choices.
+## Install, preview, rebuild
 
-## Run and rebuild
-
-Use Node.js 22.12 or newer and npm.
+Use Node.js 22.12+ and npm. The existing dependency manifest and lockfile are unchanged.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-For a production check and preview:
+To check and rebuild the production export:
 
 ```sh
 npm run typecheck
@@ -22,65 +20,90 @@ npm run build
 npm run preview
 ```
 
-Open the preview address printed by Vite. Serve the site over HTTP or HTTPS; opening an ES-module application directly through a `file:` URL is not the supported preview method.
+Open the address printed by Vite. `dist/` is the complete static export and is included alongside the source and lockfile. Vite’s existing `base: './'` makes scripts, styles, fonts, favicon and share image work at a static gateway subpath. Navigation uses hashes. Serve `dist/` over HTTP or HTTPS; a `file:` URL is not supported. Hosting/publication is handled separately.
 
-`npm run build` replaces `dist/`. The complete production export, source, package manifest, and lockfile are included together. Vite uses `base: './'`; fonts, icons, artwork, share image, styles, and scripts are local. Navigation uses section hashes, with no server rewrites. Serve the contents of `dist/` at a root or a subpath. Hosting is handled after this assignment.
+## Controls and combat
 
-## Play
+| Action | Keyboard | Pointer / touch |
+| --- | --- | --- |
+| Jump / fly / hover | W, Up Arrow or Space; hold to hover | Hold Fly; release and tap for another jump |
+| Fast dive | S or Down Arrow | Hold Dive |
+| Retreat | A or Left Arrow | Hold Back |
+| Advance + 1.55× nitro | D or Right Arrow | Hold Nitro |
+| Golden Seed Cannon | Automatically fires; F resets aim forward | Click or tap the scene to aim and fire; mouse movement also aims |
+| Mega Cheese Bomb | E, 8s recharge | Cheese Bomb button |
+| Wheel Lightning Storm | Q, 12s recharge | Wheel Storm button |
+| Pause / resume | P or Escape | Pause / Resume ride |
 
-- Choose Sunbaked valley, Cactus pass, or Moonlit mesa, then select **Start riding**.
-- Tap the trail, press Space, Arrow Up, or W, or use **Jump**. Jump a second time in the air for a double jump.
-- Avoid rocks and cacti. Each cheese pickup adds one snack, independently of distance. The ride gradually speeds up.
-- Use the pause control, P, or Escape for a breather. Opening help or the clear-log confirmation also pauses the ride; resume explicitly afterwards. P or Escape resumes a paused ride; **Resume ride** is also available. Leaving the window or hiding the tab pauses play.
-- A collision ends the ride. Retry immediately or choose another trail. **Finish this ride** is available while paused.
+Start with two jumps, 100 HP and 10 damage per seed. Thruster fuel refills on the ground. Hazards deal 25 damage with a short invulnerability window. Destroying a cart or goblin awards 5 coins; collecting a cheese pickup awards 1. The boss arrives at 600 m. **Boss Rush** starts that fight immediately from the ready/results screen without awarding artificial distance. Defeating the Baron awards 60 coins and finishes the run.
 
-Sound is optional, starts through an explicit interaction, and uses short synthesized effects. It does not fetch audio.
+On a narrow screen, starting or resuming scrolls the game into view so the scene and touch weapons fit together. Opening help, opening the garage, buying an upgrade, hiding the tab or leaving the window pauses play. Resume explicitly. Finish a paused run to change trails or start another Boss Rush.
 
-## Records and privacy
+## Live Squeekchain telemetry
 
-The latest 20 completed rides, an all-time personal best, and the sound preference are saved under `squeekrider-odyssey-v1` in this browser's local storage. There is no account, shared leaderboard, analytics, wallet, or backend. A personal best remains after its ride leaves the 20-entry history. Clearing the log, after confirmation, also clears that best.
+The browser performs independent GET requests immediately and every 15 seconds to:
 
-Filter by trail, sort by latest or longest, or export all saved rides as CSV. Export includes UTC timestamps. The displayed dates use the browser's local time. Invalid saved data is discarded. If storage is blocked, the page explains that records last for the current visit, and the game remains playable.
+- [Squeekchain status](https://api.squeekchain.com/v1/status): `measurement.coreStatus`, `measurement.rpmMilli`, `builder.anchor.blockHeight`.
+- [Squeekchain economy](https://api.squeekchain.com/v1/economy/state): `totalSettlements` (also accepts the same field under `settlements`).
 
-## Checks actually run
+The speedometer’s km/h value is **game bike speed**. `rpmMilli` is displayed separately in its original API units; it is not presented as ordinary RPM. Large integer fields retain precision.
 
-For this revision, the source and unchanged lockfile were installed in a fresh temporary build directory. `npm ci`, `npm run typecheck`, `npm test`, and `npm run build` all exited successfully. Its final `dist/` is the delivered production export. Frontend dependencies and package caches were kept outside the submission tree; no ignore file was added or changed.
+**Live Wheel Turbo** starts armed. With fresh, online `SPINNING` telemetry and positive `rpmMilli`, it grants 1.35× bike speed and a three-way spread cannon. It stacks multiplicatively with nitro (2.0925× combined). `IDLE`, missing, failed or stale telemetry puts turbo on standby; ordinary play and nitro keep working. Requests time out after 8 seconds. Failed requests preserve last-known readings, label the connection, and retry on the normal interval; **Refresh data** retries immediately.
 
-| Check | Actual result |
+Live checks on 2026-11-02 returned HTTP 200 for both endpoints with browser CORS access. The wheel reported `IDLE`, `rpmMilli: 0`, and anchor block `6808`. The economy response did **not** contain `totalSettlements`. The HUD therefore shows **Unavailable**, with an explanation; it never substitutes rounds, blocks or token balances. The production site contains no fabricated live feed or fallback numbers. API availability and its schema remain external dependencies.
+
+## Royal Bike Garage and records
+
+Each upgrade costs 40 collected coins, per level, up to level 5:
+
+- **Golden Seed Cannon:** 10 / 16 / 22 / 28 / 34 damage per seed.
+- **Jetpack & jumps:** 2–6 jumps, greater lift and maneuvering speed, and 2.0–3.2 seconds of hover fuel.
+- **Max HP armor:** 100 / 125 / 150 / 175 / 200 HP. Buying armor also adds the gained HP to the current run.
+
+Every three purchased levels raises the character rank. All three upgrades at level 5 earn **Level 5 Supreme Wheel Monarch**. Coins are banked as they are earned, including ability and boss rewards; upgrades pause the run and apply immediately.
+
+Garage coins/levels use local storage key `squeekrider-royal-garage-v2`. The existing `squeekrider-odyssey-v1` key retains the latest 20 completed rides, personal best and sound preference. Old ride history remains readable. Filter by trail, sort, export CSV or clear the log after confirmation. Clearing the log preserves garage progress. Invalid storage is discarded safely; blocked storage produces a visible “this visit” explanation. These are local game records, not a shared leaderboard or on-chain tokens. There are no wallets, transactions, accounts or analytics.
+
+Sound is opt-in and uses native Web Audio synth effects for jumps, firing, collecting, upgrading, damage, lightning and explosions. The sound control also mutes them. No audio files are downloaded.
+
+## Validation actually performed
+
+Dependencies were installed with the unchanged lockfile in a temporary build directory outside the repository. The final source, assets and tests were copied there for the package scripts; its production export was copied into `dist/`. No dependency/cache directory or new ignore rule is included.
+
+| Check | Result |
 | --- | --- |
-| Clean install and production build | Passed; 33 modules transformed |
-| TypeScript | Passed, no errors |
-| `npm test` | 11 tests passed, including 200 seeded game simulations |
-| Production browser interactions | 15 grouped checks passed in Chromium; WebKit start/jump/pause/resume/help also passed |
-| Review regressions | 12 checks passed across Chromium and WebKit 2370; all five reported findings reproduced and fixed |
-| Pinned taste@1 probe | All 16 checks passed at 320, 390, and 1440 wide |
-| axe-core 4.10.3 | No reported violations in five inspected states |
-| Offline runtime and subpath | Loaded at `/preview/` with external requests blocked; no script errors or missing assets |
-| Responsive interaction review | 320, 390, 600, 820, 1024, and 1440 wide; maximum counters and 20-record history checked |
+| Clean `npm ci` | Passed, existing lockfile |
+| `npm run typecheck` | Passed |
+| `npm test` | 22 passed, including 200 seeded simulations |
+| `npm run build` | Passed, 34 modules |
+| Production interaction suite | 15 groups passed, Chromium and WebKit |
+| Pinned taste@1 design probe | 16/16 passed, 320 / 390 / 1440 px |
+| axe-core 4.10.3 | No violations in ready, help, open/closed garage and reduced-motion states |
+| Responsive overflow checks | Passed at 320, 390, 600, 820, 1024 and 1440 px |
+| Live API checks | Both endpoints HTTP 200; actual readings displayed in Chromium |
 
-The optional browser suite is included at `scripts/validate-browser.mjs`. It serves the production export itself in a bounded foreground process and closes its server and browsers afterwards. With Playwright available locally:
+Run the included browser suite with Playwright installed normally in a separate tools directory, or with an existing installation:
 
 ```sh
+# Point these variables to your own installed tools when needed.
 export IMD_PLAYWRIGHT=/absolute/path/to/playwright/index.mjs
-export PLAYWRIGHT_BROWSERS_PATH=/absolute/path/to/browsers
+export PLAYWRIGHT_BROWSERS_PATH=/absolute/path/to/browser-binaries
+export AXE_SCRIPT=/absolute/path/to/axe-core/axe.min.js
 node scripts/validate-browser.mjs
-
-# With the same Playwright settings, run the focused review regressions:
-node scripts/validate-revision.mjs
 ```
 
-Optionally set `AXE_SCRIPT` to a local `axe.min.js` to include accessibility scans. Neither Playwright nor axe is needed to build or run the site. The suite writes temporary evidence under `test/scratch/`; that folder is not part of the deliverable.
+`AXE_SCRIPT` is optional. `IMD_WEBKIT_EXECUTABLE` can name a local WebKit launcher when its runtime libraries need a wrapper. These tools are not production dependencies. The suite serves `dist/` at `/preview/` in a bounded foreground process and closes its server/browsers. API fixtures test spinning, idle, missing, stale, failure and recovery behavior; they are confined to tests. Polling is checked with a browser clock, without a real 15-second wait. Output under `test/scratch/` is disposable. `scripts/validate-revision.mjs` forwards to the current suite.
 
-The supplied design probe was rerun with its external Playwright module and `--out test/scratch/taste --offline`. The focused suite checks pixels before input and while animation callbacks are withheld, measures real rider movement after Jump receives focus, verifies modal pause/cancel/confirm, and checks the persisted best at 320, 390, 600, 820, 821, and 1440px. Per-finding answers are in `.imd-responses.json`. The review, fixed findings, measured color pairs, and coverage limits are recorded in [VALIDATION.md](VALIDATION.md). The implemented design system is documented in [DESIGN.md](DESIGN.md).
+The supplied probe was run from the repository root as:
 
-## Limitations
+```sh
+node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste --offline
+```
 
-Chromium and Playwright WebKit 2370 were checked in this revision. The browser connector could not start because its Chrome executable was missing; inspection used local headless browser automation and actual screenshots instead. Physical Safari/iOS devices were not verified. Native 200% zoom, RTL presentation, and screen-reader sessions were not performed.
+Its pinned input is removed by the assignment runner after submission. Current results and selected screenshots are retained in `docs/review/odyssey-action/`; the other `docs/review/` files document the previous release. See [VALIDATION.md](VALIDATION.md) for six-domain coverage, repaired findings and limitations, and [DESIGN.md](DESIGN.md) for the implemented design system.
 
-The surrounding interface supports keyboard operation and semantic controls, but the real-time obstacle game is visual and does not provide a complete nonvisual equivalent. Reduced motion removes decorative dust, scarf and wheel animation, smooth scrolling, and UI transitions; essential trail movement continues during play and has a visible pause control. Automated scans do not establish full accessibility compliance. Records are local and can be edited or erased through browser storage.
+## Limits and credits
 
-## Project map and credits
+Physical iOS/Android devices, native browser zoom, screen-reader sessions and listening to the generated sound were not performed. WebKit gameplay used controlled API fixtures; live network/CORS verification was in Chromium. WebKit initially lacked runtime libraries; temporary libraries and a launcher outside the repository enabled its successful checks. The canvas game is visual and does not offer a full nonvisual equivalent. Reduced motion removes decorative parallax, particles, speed streaks, lightning/bomb flashes, scarf/wheel motion and UI transitions; essential gameplay continues only after starting and can be paused. Automated accessibility checks do not establish full accessibility compliance.
 
-`src/App.tsx` owns the UI and lifecycle; `src/game.ts` contains the deterministic simulation and storage validation; `src/art.ts` draws the original canvas artwork; `src/styles.css` defines the visual system. `public/` contains the source favicon, share PNG, and runtime license notices. `tests/game.test.ts` checks the engine. `dist/` is the complete static delivery.
-
-The two local variable fonts are Bricolage Grotesque and DM Sans, distributed under the SIL Open Font License. React and React DOM are MIT licensed. Notices are retained in `public/licenses/` and copied into `dist/licenses/` by the build. The design review applies Jakub Krehel's Better Interface guidance and Paul Bakaus's Impeccable documentation method; their pinned notices and license texts are retained in `third_party/Design-reference-LICENSE.txt` and [DESIGN.md](DESIGN.md).
+`src/App.tsx` owns UI and lifecycle; `src/game.ts` contains simulation and persistence validation; `src/telemetry.ts` contains parsing/polling; `src/art.ts` draws local original art; `src/sound.ts` synthesizes effects. Existing Bricolage Grotesque and DM Sans fonts are bundled under the SIL Open Font License; React/React DOM retain MIT notices in `public/licenses/` and `dist/licenses/`. Better Interface and Impeccable design/documentation notices remain in `third_party/Design-reference-LICENSE.txt`.

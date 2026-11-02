@@ -1,0 +1,101 @@
+{
+  "limitBytes": 8388608,
+  "addedOrChangedFileBytes": 1282739,
+  "exportBytes": 444576,
+  "exportFiles": [
+    {
+      "path": "dist/assets/bricolage-latin-DLoelf7F.woff2",
+      "bytes": 41344,
+      "sha256": "a97804dc9fbe5fc972a08018c5eda4dab7ef2346f64c57e61419d05e6de4ea1c"
+    },
+    {
+      "path": "dist/assets/dm-sans-latin-Xz1IZZA0.woff2",
+      "bytes": 36932,
+      "sha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543"
+    },
+    {
+      "path": "dist/assets/index-CggWFTqa.js",
+      "bytes": 241852,
+      "sha256": "71e568e9cdab3a7f7bf19416bfceaa444cc367484d5b1a3d1af50767822f242c"
+    },
+    {
+      "path": "dist/assets/index-EE4plqFb.css",
+      "bytes": 27638,
+      "sha256": "ffdb8ad1527393cc78390daaa4057c82184f19ed8a322ec716427dac02ebde3c"
+    },
+    {
+      "path": "dist/favicon.svg",
+      "bytes": 460,
+      "sha256": "5d3709381facff314cce0068408ba1b08d1bb80c49293ee67ef034814a0a6888"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 1253,
+      "sha256": "6af3a79ec264a6c4075ae85576865ef9f722a58b4c900a2580e3f10f2a9ec0ce"
+    },
+    {
+      "path": "dist/licenses/Bricolage-Grotesque-OFL.txt",
+      "bytes": 4401,
+      "sha256": "923f4ddf0fd39f9b7794ab0df7332f3d95dc43e8ad7ec2289d6d9e8491177f51"
+    },
+    {
+      "path": "dist/licenses/DM-Sans-OFL.txt",
+      "bytes": 4502,
+      "sha256": "6fbd040a29c2037a765dfb9f2561e9965b5c95c6dcb5dce516089d63d5f17af7"
+    },
+    {
+      "path": "dist/licenses/React-DOM-LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "path": "dist/licenses/React-LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "path": "dist/share.png",
+      "bytes": 84018,
+      "sha256": "46e7e6f3d463750e8e07357fce92a6c4ebe95a2f59be452182b59a5098c158e0"
+    }
+  ],
+  "entryAssetsRelative": true,
+  "cssAssetsPresent": true,
+  "shareDimensions": [
+    1200,
+    630
+  ],
+  "protectedConfigurationUnchanged": true,
+  "newIgnoreRules": false,
+  "generatedDependencyDirectoriesIncluded": false,
+  "changedOrAddedPaths": [
+    "DESIGN.md",
+    "README.md",
+    "VALIDATION.md",
+    "dist/assets/index-CggWFTqa.js",
+    "dist/assets/index-EE4plqFb.css",
+    "dist/index.html",
+    "dist/share.png",
+    "docs/review/odyssey-action/accessibility-results.json",
+    "docs/review/odyssey-action/browser-results.json",
+    "docs/review/odyssey-action/bundle-report.json",
+    "docs/review/odyssey-action/desktop-ready.png",
+    "docs/review/odyssey-action/garage-monarch.png",
+    "docs/review/odyssey-action/live-mobile.png",
+    "docs/review/odyssey-action/mobile-playing.png",
+    "docs/review/odyssey-action/mobile-ready.png",
+    "docs/review/odyssey-action/taste-results.json",
+    "docs/review/odyssey-action/webkit-mobile.png",
+    "index.html",
+    "public/share.png",
+    "scripts/validate-browser.mjs",
+    "scripts/validate-revision.mjs",
+    "src/App.tsx",
+    "src/art.ts",
+    "src/game.ts",
+    "src/sound.ts",
+    "src/styles.css",
+    "src/telemetry.ts",
+    "tests/game.test.ts"
+  ]
+}

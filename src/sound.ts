@@ -1,6 +1,8 @@
-// Short synthesized effects: nothing is downloaded and sound starts only by choice.
+import type { SoundEvent } from "./game";
+// All effects are synthesized locally and unlocked only by an explicit sound action.
 export class RideAudio {
   private context?: AudioContext;
+  private lastShot = 0;
   enabled = false;
   async enable() {
     try {
@@ -14,28 +16,39 @@ export class RideAudio {
       return false;
     }
   }
-  play(kind: "jump" | "cheese" | "crash") {
+  play(kind: SoundEvent) {
     if (!this.enabled || !this.context || this.context.state !== "running")
       return;
     const ctx = this.context,
       at = ctx.currentTime;
+    if (kind === "shoot" && at - this.lastShot < 0.15) return;
+    if (kind === "shoot") this.lastShot = at;
+    const notes: Record<SoundEvent, [number, number, number, OscillatorType]> =
+      {
+        jump: [210, 620, 0.15, "sine"],
+        shoot: [650, 190, 0.065, "triangle"],
+        cheese: [880, 1320, 0.1, "sine"],
+        upgrade: [440, 1760, 0.4, "triangle"],
+        explosion: [130, 28, 0.28, "sawtooth"],
+        crash: [100, 36, 0.2, "triangle"],
+        lightning: [1700, 80, 0.32, "sawtooth"],
+      };
+    const [from, to, duration, wave] = notes[kind];
     const osc = ctx.createOscillator(),
       gain = ctx.createGain();
-    osc.type = kind === "crash" ? "triangle" : "sine";
-    osc.frequency.setValueAtTime(
-      kind === "cheese" ? 780 : kind === "jump" ? 240 : 130,
-      at,
-    );
-    osc.frequency.exponentialRampToValueAtTime(
-      kind === "cheese" ? 1180 : kind === "jump" ? 480 : 50,
-      at + 0.12,
-    );
-    gain.gain.setValueAtTime(0.045, at);
-    gain.gain.exponentialRampToValueAtTime(0.001, at + 0.15);
+    osc.type = wave;
+    osc.frequency.setValueAtTime(from, at);
+    osc.frequency.exponentialRampToValueAtTime(to, at + duration);
+    gain.gain.setValueAtTime(kind === "shoot" ? 0.018 : 0.04, at);
+    gain.gain.exponentialRampToValueAtTime(0.001, at + duration);
     osc.connect(gain);
     gain.connect(ctx.destination);
     osc.start(at);
-    osc.stop(at + 0.16);
+    osc.stop(at + duration + 0.02);
+    osc.onended = () => {
+      osc.disconnect();
+      gain.disconnect();
+    };
   }
   close() {
     void this.context?.close();

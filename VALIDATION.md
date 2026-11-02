@@ -1,154 +1,104 @@
-# Implementation and validation record
+# Validation and design review
 
-Date: 2026-11-02. This is the worker's own evidence, not independent certification.
+Worker validation of the updated static export, 2026-11-02. This records local evidence, not independent certification.
 
-## Revision review and verification
-
-All five findings were reproduced against a preserved copy of the accepted `dist/` before changing application source. The changes are confined to the canvas initialization, modal pause, button-focused jump shortcuts, responsive personal best, and reported first-screen copy. The simulation, trails, assets, dependencies, metadata and storage format remain as accepted.
-
-| Finding / severity | Reproduction | Fix in final source and recheck |
-| --- | --- | --- |
-| `ff1e73e5…` / high | Fresh WebKit 2370 at 390 × 844, mobile/touch, no input for 1.5 seconds: 356 × 330 canvas had zero opaque pixels, one color, first pixel `[0,0,0,0]`, PNG data URL length 778. | `src/App.tsx:251` sets the logical transform and renders immediately at the end of `resize()`. Final fresh WebKit: 117,480 opaque pixels, first pixel `[229,238,230,255]`, 956 colors, PNG length 19,982. Chromium and WebKit also paint with animation callbacks deliberately withheld; a real canvas resize from 356 to 346px repaints immediately. |
-| `21ed46d3…` / medium | Chromium clear-log modal during play left `phase-riding`; distance advanced 5 → 20 m in 900ms while controls were blocked. | `src/App.tsx:348` pauses before opening either dialog. Final modal tests: Chromium stays paused at 5 m and WebKit at 6 m over 900ms. Cancel preserves the seeded record and restores trigger focus. Confirm clears records/best; both exits leave the game paused and Resume works. |
-| `608c0841…` / medium | Canvas-focused shortcuts moved the rider; after clicking Jump and landing, ArrowUp and W with Jump focused left all rider-origin samples at y=346.6. | `src/App.tsx:306` lets ArrowUp/KeyW through the button guard, keeping native Space/Enter activation. Final instrumented canvas draws reach approximately y=251 after either shortcut in both engines. Observation intercepts drawing coordinates without changing game state. |
-| `d194a3b7…` / medium | With recent ride 21 m and separately stored best 1,000 m, the only best output was hidden at 320/390/600/820px. | `src/styles.css:951` keeps it visible, wraps the intro with a 12px gap and makes the value/unit compact and inline. Both engines show 1,000 m at 320/390/600/820/821/1440px without overflow. At 390px, best, illustrated product, directions, and Start riding remain on the first screen. |
-| `444fd551…` / medium taste | Initial 390px screenshot contained the headline plus intro-note, scene-signature and “Made for a moment away.”; supporting copy never called this a game. | `src/App.tsx:428` uses “One mouse. Two wheels.” with the existing brown second phrase and “A free browser game across three endless desert trails.” Removes both extra scene lines and shortens the footnote to “Free to play.” Unused styles and overlay gaps are removed, so Start riding rises within its existing overlay. Jump directions and local-record explanation remain. |
-
-The exact finding IDs, verdicts and evidence are in root `.imd-responses.json`. The durable before/after measurements are in `docs/review/revision-results.json`. Baseline mode asserts the reported defects; its passing result means successful reproduction, not correct behavior.
-
-### Better Interface coverage for this revision
-
-Read the pinned workflow, six domains’ core principles, applicable focus/layout/writing guidance, design-critic thresholds and documentation method. Applied the existing tokens and components throughout.
-
-| Domain | Coverage and outcome |
+| Area | Final result |
 | --- | --- |
-| Accessibility | Checked: button-focused keyboard jumps, pause semantics, native dialog containment/return, unchanged visible focus styles, reduced motion, labelled controls. Broader suite and axe checked ready/help/moon/paused/finished states. Screen-reader and physical-device tests not performed. |
-| Layout | Checked: personal best and first-screen product/action at six widths in both engines; broader suite also checked 1024px, maximum counters and 20 records. Probe found no horizontal scroll, overlapping text or clipped text at 320/390/1440. Native 200% zoom and RTL not verified. |
-| Writing | Checked: one four-word headline and plain game explanation; extra promotional lines removed; action, jump, record and destructive-confirmation copy preserved. |
-| Typography | Checked: existing two local fonts, three weights, 5 phone/6 desktop sizes; compact best retains value and unit. No extra type size or font added. No multilingual test. |
-| Colors | Checked: no new palette values. Probe/axe measured resolved DOM text; new compact best uses the existing secondary ink/page and strong ink/page pairs. Those solid pairs calculate to 5.11:1 (label/unit) and 10.63:1 (value). Text over canvas and animated artwork pixels remain outside a complete contrast audit. |
-| UI | Checked: synchronous ready and resized scene with deferred callbacks; active/modal/paused/resumed flows; start, retry, sound, trails and log states. Desktop and phone screenshots inspected. Slowed animation-panel and physical-touch review not performed. |
-
-### Commands and actual results on the final export
-
-Dependencies were installed outside the repository from the unchanged package manifest and lockfile using `npm ci --no-audit --no-fund` with an external cache. No ignore file was added or changed. The temporary build copy ran `npm run typecheck`, `npm test`, and `npm run build`: all exited 0. Eleven engine tests passed, including 200 seeded simulations; Vite transformed 33 modules. The resulting `dist/` replaced the repository export.
-
-The following commands ran from the repository with an externally installed Playwright module and browsers configured through the suites’ documented environment variables (and a local axe script for the broader suite):
-
-```sh
-node scripts/validate-revision.mjs --baseline
-node scripts/validate-revision.mjs
-node scripts/validate-browser.mjs
-node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste --offline
-```
-
-- Baseline: **12/12 defect-reproduction checks passed** across Chromium and WebKit 2370.
-- Final regressions: **12/12 passed** across both engines, including fresh no-input pixels, resize with callbacks withheld, real jump movement, modal cancel/confirm/resume, six-width best visibility, and copy.
-- Broader interactions: **15 Chromium groups plus 1 WebKit group passed**. No tracked script/resource errors or external runtime requests. Subpath `/preview/` works. This suite includes start, jump, pause/resume, finish/retry/collision, trail selection, sound, storage failure/corruption, maximum records, filters/sorting, CSV, clear/cancel and help focus.
-- axe-core 4.10.3: **zero reported violations in five states**. Incomplete/manual items remain recorded; this is not full accessibility certification.
-- Pinned taste@1: **16/16 passed**. First-screen prose: 17 words at 390px (limit 60); one two-beat headline; 5 phone/6 desktop font sizes. Three secondary targets below the comfortable 44px still meet its 24px/spacing rule. Ten text boxes over canvas/images are excluded from the probe’s contrast measurement.
-
-Final screenshots inspected include Chromium 390/1440, WebKit 390 with the preserved 1,000 m best, ready/riding/paused/finished/help/moon states, focused controls, and responsive 320/600/820/1024 layouts. Current representative screenshots and compact reports replace the previous files in `docs/review/`; raw runs remain in `test/scratch/` only and are removed before submission. A screenshot operation can wake WebKit drawing: the fresh-load pixel evidence is collected before taking the screenshot. The deterministic withheld-callback check separately proves initial paint and resize do not need animation frames.
-
-The browser connector could not start because its Chrome executable was missing; headless Chromium and WebKit automation provided the actual interaction and screenshot evidence. WebKit used temporary browser libraries outside the repository; no test dependencies or machine configuration ship with the static site. Physical Safari/iOS, native zoom, RTL, screen-reader sessions and slowed animation-panel checks remain unperformed. Real-time gameplay remains visual. No unresolved reported finding remains.
-
-**Revision completion: Complete for the stated scope, with the device/accessibility limits above.** No publication or Git metadata changes were performed.
-
-## Initial implementation record
-
-The sections below retain the previous round’s evidence. The revision record above supersedes its browser availability, first-screen copy, screenshot, and final-source line references.
+| Requested game features | Implemented; external missing settlement field handled explicitly |
+| Missing / fabricated features | None intentionally substituted; no fabricated live data |
+| Product and main action on first 390px screen | Yes, observed screenshot and bounding-box assertion |
+| Production build / TypeScript | Passed / passed |
+| Engine and telemetry tests | 22 passed |
+| Browser interaction groups | 15 passed; see `docs/review/odyssey-action/browser-results.json` |
+| taste@1 | 16 / 16 passed |
+| Share metadata and image | Present; local 1200×630 PNG |
 
 ## Scope and assumptions
 
-The supplied brief named **squeekrider-odyssey** and required a useful, responsive static website; no additional product specification or input assets were supplied. Implemented a single-page browser game about a mouse riding a bicycle, with three trails, real collision/pickup simulation, local records, filtering/sorting, CSV export, and help. No remote service or requester-only value is needed.
+The existing Vite/React/TypeScript game was upgraded in place. Pip, three trails, local fonts, saved v1 rides, CSV export, filtering, sorting and confirmed clearing remain. New simulation, live telemetry, royal upgrades, enemies, boss fights and synth effects run entirely in the static browser application. No wallet, contract deployment, token operation or backend was added.
 
-Source: React, TypeScript, and Vite. Export: `dist/`. All runtime assets, including fonts and a 1200 × 630 PNG share image, are local. The production browser suite serves the export under `/preview/` and blocks external requests.
+Turbo is an armed setting: fresh online `SPINNING` status with positive `rpmMilli` powers its 1.35× speed and three-way spread; idle/stale/error data leaves it on standby. The 1.55× directional nitro remains available independently, and both multipliers stack. Each of the three upgrade tracks starts at level 1, costs 40 coins per increment and caps at 5; each three purchased levels raises the rank to a maximum of Supreme Wheel Monarch. Boss Rush begins the boss immediately at actual distance zero.
 
-## Acceptance coverage
+The status and economy endpoints both returned HTTP 200, with `access-control-allow-origin: *`, in direct checks and actual Chromium requests. Observed status was `IDLE`, `rpmMilli: 0`, anchor `6808`. The economy response lacked `totalSettlements`; unavailable text is the correct observed state. This is an external API/schema limitation, not a request for a guessed value. Settlements are not inferred from round numbers or funded blocks.
 
-| Requirement | Status and evidence |
+## Commands and actual results
+
+Because the repository’s manifests/dependencies were protected, `package.json` and `package-lock.json` were copied unchanged to an isolated temporary build directory. `npm ci --no-audit --no-fund` installed 22 packages there. Source, public assets, TypeScript/Vite configuration and tests were copied there for validation. No dependency installation was made in the repository.
+
+| Command | Actual outcome |
 | --- | --- |
-| Usable site, working main interactions, responsive layouts | Met; Chromium ride/retry, keyboard/touch controls, dialogs and record flows; six widths |
-| `dist/index.html`, assets, source and lockfile | Present together in the submission tree; relative URLs mechanically checked |
-| Production build, typecheck, useful interaction validation | Passed in a fresh install and on the final export; commands below |
-| Pinned Better Interface, all six domains, fixes recorded | Reviewed below; limitations distinguished from passes |
-| Product and action on first 390 screen; metadata | Confirmed on captured 390 × 844 screenshot; title, favicon, description, og:title, real og:image |
-| Root `DESIGN.md` reflecting final source | Present; tokens, type, components and responsive implementation |
-| README with install, preview and rebuild | Present; standard npm commands and actual outcomes |
+| `npm run typecheck` | Exit 0, `tsc --noEmit`, no errors |
+| `npm test` | Exit 0; 22 passed, 0 failed; includes 200 seeded simulations |
+| `npm run build` | Exit 0; Vite 7.1.12, 34 modules; complete export copied to `dist/` |
+| `node scripts/validate-browser.mjs` | Production export served at `/preview/`; results retained in `docs/review/odyssey-action/browser-results.json` |
+| `node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste --offline` | Exit 0; all 16 checks passed at 320, 390 and 1440px, plus reduced motion |
 
-Source and export are ready for the network's Git submission step. The assignment prohibited touching `.git/`; no Git metadata was changed by the implementation commands.
+Playwright and axe-core were installed/used outside the repository. `IMD_PLAYWRIGHT`, `PLAYWRIGHT_BROWSERS_PATH` and `AXE_SCRIPT` pointed to those tools. WebKit 2370 initially lacked libraries, then lacked an EGL display. Libraries and a software-rendering launcher kept in temporary storage enabled the successful WebKit interaction check through `IMD_WEBKIT_EXECUTABLE`; no browser binaries, system libraries, package archives or launcher paths are part of the delivered source/export.
 
-## Better Interface coverage
+## Requirement coverage
 
-| Domain | Status | Checks and limits |
+| Brief requirement | Implementation and evidence |
+| --- | --- |
+| Poll both GET endpoints every 15s | `src/telemetry.ts:98`; immediate independent requests, 15,000ms interval, timeout/cleanup; unit watcher and browser-clock polling checks |
+| Live HUD: coreStatus, rpmMilli, anchor blockHeight, totalSettlements | Live speedometer and four fields in `src/App.tsx`; precision-preserving parsers; real API inspection and missing-field test |
+| Live Wheel Turbo, 1.35× and three-way cannon | `turboAvailable`, `bikeSpeed`, `fire`; idle/spinning/stale/error/toggle tests; raw telemetry never simulated in production |
+| Up/W/Space, multi-jump, hover | `jump`, upward input and fuel; engine and actual keyboard/touch checks |
+| Down/S fast dive | Downward input and increased fall velocity; physics and browser control checks |
+| Right/D front + 1.55× nitro | Horizontal input and independent multiplier; key-down/key-up speed/label checks |
+| Left/A retreat | Horizontal input; engine positional checks and browser input |
+| Automatic/click-aimed Golden Seed Cannon | Auto-shot timer, `fire`, pointer mapping; collision/reward tests and pointer aim interaction |
+| E Mega Cheese Bomb / Q Wheel Lightning Storm | `special`; area clearing, boss damage, separate 8s/12s cooldowns; keyboard/button checks |
+| Garage: coins, 40/level, cannon/jetpack/armor, Level 5 rank | `buyUpgrade`, profile parser, immediate paused application; purchase/cap/persistence/rank tests |
+| Rolling spiked carts, flying rocket goblins | Deterministic spawns, drawn enemies, contact damage and goblin projectiles; collision/hit tests and actual gameplay |
+| 600m boss and instant Boss Rush | `summonBoss`, distance trigger, rush path, visible boss health; trigger unit test and production boss defeat |
+| Web Audio synth effects and mute | Native oscillator effects for all named actions; browser counts generated oscillators and verifies mute stops new effects |
+| Responsive useful website | Screenshots, no-overflow assertions at six widths, phone auto-scroll into play, keyboard and touch controls |
+| Static export/source/lockfile | Complete `dist/`, relative Vite assets, local fonts/art/share image; unchanged original manifest and lockfile |
+| Title/favicon/description/og:title/og:image | `index.html`, `public/favicon.svg`, updated local share PNG; taste share check passed |
+| Implemented design and install/rebuild documentation | Root `DESIGN.md`, `README.md`; this review and selected evidence under `docs/review/odyssey-action/` |
+
+## Six-domain Better Interface review
+
+The pinned workflow and core principles of accessibility, layout, writing, typography, colors and UI were read and applied during implementation. The review preserves the request’s colorful action-game direction and the existing Pip/trail identity.
+
+| Domain | Coverage | Evidence and limits |
 | --- | --- | --- |
-| Accessibility | Checked | Native buttons/links/selects/dialog/table; labels and landmarks; start/resume/pause/result focus; modal Tab loop, Escape, and return; visible focus screenshots; 44px pause; live state messages; reduced motion; axe in five states. No screen-reader session, native zoom, or fully nonvisual gameplay test. |
-| Layout | Checked | 320, 390, 600, 820, 1024, 1440 widths; first phone screen; game/controls order; wrapping/max values; no horizontal scroll; no text overlap/cutting in probe. RTL and native-device zoom not performed. |
-| Writing | Checked | Four-word main headline; plain explanatory line; action verbs; directions next to controls; honest local records; empty and storage-error explanations; clearing consequence. Removed repeated short slogans. |
-| Typography | Checked | Both local fonts loaded; 5 mobile/6 desktop sizes, 3 weights, 2 families; balanced headings; tabular counters; maximum record values; natural-case copy. No multilingual font coverage was claimed. |
-| Colors | Checked | Explicit solid-pair calculations, default/hover action colors, page/supporting surfaces, moon text backing, and focus against page. Probe and axe inspected DOM text. Animated canvas pixels are not a full contrast audit. |
-| UI | Checked | Ready/riding/paused/result; selected/disabled trails; help/clear dialogs; record empty/populated/filter states; sound preference and storage failure; pointer/keyboard actions; reduced-motion CSS. Animation-panel inspection at 10% speed and physical touch tests were not performed. |
+| Accessibility | Checked | Native buttons, checkbox, progress, selects, dialog and table; names/roles; keyboard movement/activation; modal trap/Escape/focus return; touch targets; reduced motion; axe scans. No screen-reader or complete nonvisual gameplay test. |
+| Layout | Checked | First screen at 390, main-action bounds, full scenes and garage; 320/390/600/820/1024/1440 no horizontal overflow; game controls fit after start/resume; desktop and mobile screenshots. Native 200% zoom, translation and RTL unperformed. |
+| Writing | Checked | Specific action labels; costs/current benefits; local persistence explained; loading vs unavailable-field vs network-failure states; idle/armed/active turbo wording; redundant slogans removed. |
+| Typography | Checked | Two existing local variable fonts observed loaded; six-size scale, three weights, tabular numbers, wrap behavior and no clipped data. Screenshot inspection at 320, 390 and 1440; no language variants. |
+| Colors | Checked | Hex role tokens; contrast probe passes resolved solid pairs. Computed measurements: secondary `#c4bbce` on page `#171522` = 9.72:1, on surface `#211e32` = 8.75:1; primary `#171522` on gold `#ffd16d` = 12.51:1. Canvas/gradient/image text pairs excluded by the probe remain unmeasured; no blanket contrast-compliance claim. |
+| UI | Checked | Ready/riding/paused/loss/win, turbo states, available/recharging specials, garage normal/insufficient/capped states, saved/empty/filtered log, confirmations, mute, error/recovery. Named 120ms transitions, 0.96 press scale, reduced-motion guards. Animation-panel playback at 10% and physical-device behavior unperformed. |
 
-There is one visual idea: a small, line-drawn mouse traveling through a muted desert, surrounded by warm paper and restrained ink typography.
+Themes and localization are not requested; the fixed dark UI and three game palettes are intentional. Uppercase `SPINNING`/`IDLE` are required API values rather than decorative capitalized copy.
 
-## Findings fixed and rechecked
+## Findings repaired
 
-These prior-round line numbers refer to that round’s source. Current changed-source references are in the revision table above.
+All 15 browser groups and five axe-scanned states (ready, help, open garage, closed garage and reduced motion) passed.
 
-| Severity / area | Finding and evidence | Correction and recheck |
-| --- | --- | --- |
-| Medium / writing | Initial taste probe counted six two-beat lines spread across introduction, trail and guide copy. | `src/App.tsx` intro and guide; `src/game.ts:22` trail descriptions. Removed the extra start hint and rewrote the other fragments. Final probe counts one line; slogans passes. |
-| High / accessibility | Tab traversal in Chromium escaped the help dialog's controls; interaction suite failed its containment assertion. | `src/App.tsx:855` wraps Tab and Shift+Tab, retains native modal background inertness; `src/App.tsx:330` closes and restores opener focus. Six Tab traversals, Escape and return now pass. |
-| Medium / keyboard | Source review found P/Escape ignored while focus was on the Resume button. | `src/App.tsx:289` handles pause shortcuts across the game shell before excluding button Space behavior. Final suite resumes with P, pauses with Escape and resumes with the button. |
-| Medium / color | Original normal action label pair was 4.48:1 and white hover label 4.12:1. An intermediate hover pair was still 4.41:1. | `src/styles.css:15` and `.primary-button` at line 385 use dark labels on corrected orange fills: 5.11:1 normal, 4.68:1 hover. Final CSS-pair calculation passes 4.5:1. |
-| Medium / scene contrast | Moon screenshot showed pale intro text crossing the pale crescent; decorative ground signature initially calculated at 4.26:1. | `src/styles.css:376` gives moon intro opaque sky backing, 9.29:1. Signature at line 426 now calculates 5.05:1 against its plain ground color. New moon screenshot inspected. Canvas texture is not fully audited. |
-| Medium / focus | A blue inset canvas focus outline could lose contrast against the dark trail. | `src/styles.css:302` moves canvas focus indication around the shell, against page paper, 7.64:1; forced-colors fallback supplied. Inspected the keyboard-started riding screenshot. |
-| Low / layout and controls | Early phone screenshot put the start hint over Pip; pause target was only 28 × 30px; maximum distance unit wrapped. | Removed hint, raised mobile start control, enlarged pause to 44 × 44px, kept numeric table cells on one line. Final phone and max-record screenshots and overflow checks pass. |
-| Medium / records | A best computed only from recent history would disappear when its ride left the 20-entry log. | `src/App.tsx:101` persists best separately; `src/game.ts:288` validates and merges it. A dedicated regression test passes. |
-| Medium / share asset | First locally generated share image inherited centered text alignment and clipped its title. | Corrected canvas text alignment and regenerated `public/share.png`. Inspected the full 1200 × 630 image and verified its bytes load under the preview subpath. |
+Source citations identify the final implementation at the repaired location. Earlier behavior is described separately.
 
-No confirmed blocking finding remains in the implemented scope.
+1. **High · layout/UI: health panel covered the rider.** At 390px during play, the original vertical health/fuel panel occupied Pip’s body. Reproduction: start a ride, jump, view the lower-left scene. The final `.armor-hud` rules at `src/styles.css:1902` place a short horizontal panel in the track gutter. Drive status moved below the top HUD and yields to the boss bar. Rechecked in the mobile playing screenshot; rider, floor and meters are distinct.
+2. **Medium · layout: ready overlay obscured the artwork.** The first 390px inspection showed an opaque start panel over Pip’s head. `src/styles.css:407` / `src/App.tsx` ready overlay now leave the primary action over open landscape, removing the duplicate headline/body panel. Initial ready screenshots show the complete rider and action together.
+3. **Medium · writing: repeated two-beat slogans.** The first taste run passed 15/16, flagging eight slogan-like lines. Trail descriptions in `src/game.ts` and ready/section copy in `src/App.tsx` were changed to plain descriptions/directions. The main “Small rider. Royal firepower.” line remains. Final taste slogans check passes.
+4. **Medium · accessibility: decorative pips had prohibited ARIA labels.** Initial axe scans reported `aria-prohibited-attr` on all three generic pip containers. `src/App.tsx:1148` marks them `aria-hidden`; the visible level text already carries the information. Rechecked by axe in the ready and fully upgraded garage states with zero violations.
+5. **Medium · writing/data: pending and failed requests overstated what was known.** Source review found the economy’s initial loading phase could appear partial/stale and a failed request could display the missing-field explanation without a valid response. `src/App.tsx:267` now considers both pending requests; `src/App.tsx:1053` gates the missing-field message on actual parsed data and gives network failure a retry message. Browser offline/malformed/service-error/recovery checks pass; an offline response does not claim a missing settlement field.
+6. **High · interaction: ability rewards needed immediate banking.** Reviewing the lifecycle found that abilities can add cheese outside the animation update, bypassing an animation-frame-only coin delta. `src/App.tsx:389` now banks the ability’s earned delta immediately; frame rewards remain handled in the animation loop. Unit ability rewards and the production banking check verify the saved coins; no upgrade cost/rank rules changed.
 
-## Commands and actual outcomes
+7. **Low · accessibility: sound action carried a redundant pressed state.** `src/App.tsx:660` uses changing Enable sound / Mute sound action names. The redundant `aria-pressed` was removed so the action label cannot be read as an inverted mute state. The native button retains keyboard activation; the final sound/mute browser check passes.
 
-A clean temporary copy containing the source, configuration, package manifest, lockfile, tests, and public assets ran:
+Two initial browser-suite failures were test assumptions, not product defects: the page intentionally has 24px scroll padding, and help appears in both header and footer. Bounds and selectors were corrected. WebKit HUD synchronization waits for the rendered label instead of assuming a 150ms frame deadline.
 
-```sh
-npm ci --cache /tmp/squeekrider-npm-cache --no-audit --no-fund
-npm run typecheck
-npm test
-npm run build
-```
+## Evidence
 
-All exited 0. TypeScript reported no errors. Eleven real tests passed, including double-jump limits, landing, collision on three trails at narrow/wide sizes, single-use pickups, score caps, 200 seeded physics simulations, malformed storage, and persistent all-time best. Production build transformed 33 modules and emitted local HTML, CSS, JavaScript and WOFF2 files. Runtime notices were copied into the export. The final clean build was copied to the workspace `dist/`.
+Current machine-readable outcomes: `docs/review/odyssey-action/browser-results.json`, `docs/review/odyssey-action/taste-results.json`, `docs/review/odyssey-action/bundle-report.json`. Selected screenshots: `docs/review/odyssey-action/mobile-ready.png`, `docs/review/odyssey-action/mobile-playing.png`, `docs/review/odyssey-action/desktop-ready.png`, `docs/review/odyssey-action/garage-monarch.png`, `docs/review/odyssey-action/webkit-mobile.png` and `docs/review/odyssey-action/live-mobile.png`. Controlled screenshots use explicit API/game-save test fixtures; `live-mobile.png` uses the real API. The source share card is `public/share.png`, copied by the build to `dist/share.png`.
 
-The supplied runtime ran the final browser suite:
+The browser checks exercise starting/retrying, four directions, nitro release, hover fuel/dive, touch Fly, aim/reset, pause/resume, E/Q cooldowns, modal focus, finishing/log persistence, CSV content, filters/sort, safe clearing, 15s GET polling, turbo toggle/spinning/idle, stale/failure/recovery, purchases/caps/rank, immediate ability reward banking, boss defeat, native sound nodes/mute, blocked storage and responsive reflow. Engine tests additionally check precise speed multipliers/spread angles, damage/invulnerability, boss threshold, upgrade math, malformed storage, missing API fields, exact integer handling and independent request cleanup.
 
-```sh
-AXE_SCRIPT=test/scratch/axe.min.js \
-IMD_PLAYWRIGHT=/opt/imd-tools/playwright-mcp/node_modules/playwright/index.mjs \
-PLAYWRIGHT_BROWSERS_PATH=/opt/imd-tools/ms-playwright \
-node scripts/validate-browser.mjs
-```
+Actual Chromium live browsing recorded both named API requests returning 200 repeatedly and no console errors. Test fixture failures intentionally abort external requests; they are not production resource failures. All local runtime assets loaded at the `/preview/` subpath, with no local 404s or uncaught script errors. The offline design probe blocks remote requests and still renders the complete game interface.
 
-Result: **15 grouped Chromium checks passed**. Checked first-screen visibility, keyboard/touch jumping, P/Escape/button pause and resume, frozen paused score, real obstacle collision, retry, all trails, focus containment/restoration, local persistence, filter/sort, CSV bytes and filename, clear/cancel, audio toggle persistence, reduced motion, corrupt storage, maximum 20-record history, blocked storage fallback, subpath loading, and absence of errors, missing resources, and external runtime requests. A simulated window blur also produced a paused state.
+## Completion and limitations
 
-axe-core 4.10.3 ran WCAG A/AA tags through WCAG 2.2 and best-practice checks on ready with maximum records, help, moon ready, paused, and finished states: **zero reported violations in each**. Incomplete/manual review items remain in the saved accessibility summary; no full conformance claim is made.
+Complete for the stated scope, with the external settlement-field absence displayed honestly. The worker checks are not an independent network certification.
 
-The exact pinned probe ran against the final export:
-
-```sh
-IMD_PLAYWRIGHT=/opt/imd-tools/playwright-mcp/node_modules/playwright/index.mjs \
-PLAYWRIGHT_BROWSERS_PATH=/opt/imd-tools/ms-playwright \
-node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste --offline
-```
-
-Result: **16/16 passed**. The 390 first-screen prose count was 27 words (bar 60). Computed fonts were Bricolage Grotesque and DM Sans, weights 400/600/700. No horizontal overflow at 320/390/1440, no measured text overlap or clipping, no `transition: all`, no endless reduced-motion animation, and all required share metadata were present. The probe excludes text over canvas/images from its contrast verdict; those exclusions are not claimed as passes. Three secondary targets were below the comfortable 44px size but met the probe's 24px/spacing requirement.
-
-## Evidence and limitations
-
-Temporary browser evidence was created in `test/scratch/browser-check/`: ready/riding/paused/finished/help/moon screenshots, six responsive screenshots, focused/reduced-motion screenshots, maximum-record screenshots, CSV, and JSON results. The pinned probe captured 390/1440 screenshots and JSON under `test/scratch/taste/`. These temporary files are removed by the submission process. Selected final screenshots and compact results are preserved in `docs/review/`. The canonical durable report is root `VALIDATION.md`; an identical artifact copy is also provided.
-
-The dedicated browser connector returned **Transport closed**. Local headless Chromium supplied the screenshots and interaction checks instead. WebKit launch failed because its executable is not installed in the supplied browser runtime; Safari remains unverified. No physical-device tests, screen-reader sessions, browser-native 200% zoom, RTL review, or slowed animation-panel review were performed. The game remains a visual reaction game. Reduced motion leaves essential, user-started scrolling intact and removes decorative animation; play is pausable. No dark page theme or localization was requested or implemented.
-
-**Completion: Complete for the stated scope, with the browser/device/accessibility coverage limits above.** All reported checks are worker-run observations. No hosting or publication was performed.
+Not performed: physical-device testing, native screen-reader sessions, native 200% browser zoom, RTL/localized variants, listening to sound, animation-panel inspection at 10% speed, exhaustive pixel contrast over dynamic art. Chromium verified the real API/CORS flow; WebKit gameplay used fixtures because its temporary local runtime lacked normal TLS modules. Automated scans do not establish full accessibility compliance, and the visual canvas has no full nonvisual gameplay equivalent. Local saves can be edited or removed by the visitor. External API availability, stale hardware readings and future schema changes remain external limitations; normal gameplay works without those services.

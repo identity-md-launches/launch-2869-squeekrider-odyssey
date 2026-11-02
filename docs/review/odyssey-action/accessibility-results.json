@@ -1,0 +1,11 @@
+{
+  "tool": "axe-core 4.10.3",
+  "states": {
+    "axe-ready.json": [],
+    "axe-help.json": [],
+    "axe-reduced-motion.json": [],
+    "axe-garage-closed.json": [],
+    "axe-garage.json": []
+  },
+  "note": "Automated checks only; no screen-reader or nonvisual-gameplay claim."
+}

@@ -1,0 +1,68 @@
+{
+  "results": [
+    {
+      "name": "390px first screen contains the game and primary action",
+      "passed": true
+    },
+    {
+      "name": "real field names, missing settlements and idle turbo standby",
+      "passed": true
+    },
+    {
+      "name": "start, nitro press/release, hover, dive, keyboard and touch controls",
+      "passed": true
+    },
+    {
+      "name": "E and Q invoke special weapons with independent cooldowns",
+      "passed": true
+    },
+    {
+      "name": "modal pauses play, traps keyboard focus, closes with Escape and restores opener",
+      "passed": true
+    },
+    {
+      "name": "finish, persisted ride log, CSV export, filters and safe clear",
+      "passed": true
+    },
+    {
+      "name": "API polling performs GET on both endpoints at 15s and turbo follows spinning telemetry",
+      "passed": true
+    },
+    {
+      "name": "garage upgrades cost 40, pause a ride, persist levels and reach rank five",
+      "passed": true
+    },
+    {
+      "name": "Boss Rush spawns Cat-Blimp immediately, aim and abilities damage its health",
+      "passed": true
+    },
+    {
+      "name": "sound creates native synth oscillators, then mute silences new effects",
+      "passed": true
+    },
+    {
+      "name": "offline, malformed response, service error and recovery remain usable",
+      "passed": true
+    },
+    {
+      "name": "ability rewards bank immediately and the collapsed garage stays accessible",
+      "passed": true
+    },
+    {
+      "name": "blocked storage keeps play and upgrades usable with a visible persistence warning",
+      "passed": true
+    },
+    {
+      "name": "320, 390, 600, 820, 1024 and 1440 layouts, reduced motion and local assets",
+      "passed": true
+    },
+    {
+      "name": "WebKit mobile supports start, movement, specials, pause and modal focus return",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Browser API fixtures exercise spinning, missing, stale, offline and recovery states; they are not live telemetry evidence.",
+    "Native screen readers, physical devices, native 200% browser zoom and listening to the sound were not tested."
+  ]
+}
